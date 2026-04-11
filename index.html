@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COSMAX PR팀 업무 대시보드</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root{--bg:#0c0e14;--sf:#161923;--sf2:#1c2030;--sf3:#232840;--bd:#2a3050;--tx:#e8eaf0;--tx2:#8b90a8;--ac:#5b8df9;--fire:#ff6b4a;--grn:#4ade80;--yel:#fbbf24;--pur:#a78bfa;--pink:#f472b6;--cyan:#22d3ee;--r:10px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+
+.hd{position:sticky;top:0;z-index:100;background:rgba(12,14,20,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:0 28px}
+.hd-in{max-width:1480px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:800}
+.logo-b{background:linear-gradient(135deg,var(--ac),var(--pur));padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;color:#fff}
+.hd-r{display:flex;align-items:center;gap:12px}
+.hd-date{color:var(--tx2);font-size:12px}
+.live{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--grn)}
+.live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--grn);animation:pu 2s infinite}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.3}}
+.rbtn{background:var(--sf2);border:1px solid var(--bd);color:var(--tx2);padding:5px 12px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:.2s}
+.rbtn:hover{background:var(--ac);color:#fff;border-color:var(--ac)}
+
+.tw{background:rgba(12,14,20,.9);backdrop-filter:blur(20px);position:sticky;top:56px;z-index:99;border-bottom:1px solid var(--bd)}
+.tabs{display:flex;gap:1px;max-width:1480px;margin:0 auto;padding:0 28px;overflow-x:auto}
+.tab{padding:10px 14px;cursor:pointer;font-size:11.5px;font-weight:600;color:var(--tx2);border:none;border-bottom:2px solid transparent;background:none;transition:.2s;white-space:nowrap;font-family:inherit}
+.tab:hover{color:var(--tx)}.tab.on{color:var(--ac);border-bottom-color:var(--ac)}
+
+.ct{max-width:1480px;margin:0 auto;padding:20px 28px}
+.cd{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
+.cd-h{padding:12px 16px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--bd)}
+.cd-b{padding:12px 16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.st{background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r);padding:12px 16px}
+.st-l{font-size:11px;color:var(--tx2);font-weight:600;margin-bottom:5px}
+.st-v{font-size:24px;font-weight:800;letter-spacing:-1px}
+.st-s{font-size:10px;color:var(--tx2);margin-top:2px}
+
+.tw2{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;padding:7px 10px;font-weight:700;font-size:10px;color:var(--tx2);background:var(--sf2);border-bottom:1px solid var(--bd);position:sticky;top:0}
+td{padding:7px 10px;border-bottom:1px solid rgba(42,48,80,.4);vertical-align:top;line-height:1.5}
+tr:hover td{background:rgba(91,141,249,.03)}
+.bd{display:inline-block;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:600;white-space:nowrap}
+.bd-f{background:rgba(255,107,74,.15);color:var(--fire)}.bd-n{background:rgba(91,141,249,.12);color:var(--ac)}
+.bd-p{background:rgba(74,222,128,.12);color:var(--grn)}.bd-r{background:rgba(251,191,36,.12);color:var(--yel)}
+.bd-d{background:rgba(167,139,250,.12);color:var(--pur)}.bd-k{background:rgba(34,211,238,.1);color:var(--cyan)}
+.bd-pk{background:rgba(244,114,182,.12);color:var(--pink)}.bd-pr{background:rgba(91,141,249,.15);color:var(--ac)}
+.bd-sns{background:rgba(244,114,182,.12);color:var(--pink)}
+.amt{text-align:right;font-variant-numeric:tabular-nums}
+
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-h{text-align:center;font-size:10px;font-weight:700;color:var(--tx2);padding:6px}
+.cal-h:first-child{color:var(--fire)}.cal-h:last-child{color:var(--ac)}
+.cal-c{min-height:80px;padding:4px 5px;background:var(--sf2);border-radius:4px;font-size:10px}
+.cal-c.today{border:1px solid var(--ac);background:rgba(91,141,249,.06)}
+.cal-c.empty{background:transparent;min-height:auto}
+.cal-dt{font-weight:700;font-size:11px;margin-bottom:2px;color:var(--tx2)}
+.cal-c.today .cal-dt{color:var(--ac)}
+.cal-ev{padding:1px 3px;margin-top:1px;border-radius:2px;font-size:9px;line-height:1.3}
+.cal-ev.pr{background:rgba(91,141,249,.1);color:var(--ac)}
+.cal-ev.pr-done{background:rgba(91,141,249,.06);color:rgba(91,141,249,.45);text-decoration:line-through}
+.cal-ev.sns{background:rgba(244,114,182,.1);color:var(--pink)}
+.cal-ev.sns-done{background:rgba(244,114,182,.06);color:rgba(244,114,182,.4);text-decoration:line-through}
+.cal-ev.vac{background:rgba(148,163,184,.15);color:rgba(148,163,184,.9);font-weight:600}
+.cal-ev.co{background:rgba(251,191,36,.1);color:var(--yel)}
+
+.bb{height:5px;background:var(--sf3);border-radius:3px;overflow:hidden;width:100%}
+.bf{height:100%;border-radius:3px;transition:width .6s}
+.fb{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap}
+.fbtn{padding:4px 11px;border-radius:14px;font-size:11px;font-weight:600;background:var(--sf2);border:1px solid var(--bd);color:var(--tx2);cursor:pointer;transition:.2s;font-family:inherit}
+.fbtn:hover,.fbtn.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.si{background:var(--sf2);border:1px solid var(--bd);border-radius:6px;padding:5px 10px;color:var(--tx);font-size:12px;width:200px;outline:none;font-family:inherit}
+.si::placeholder{color:var(--tx2)}.si:focus{border-color:var(--ac)}
+
+.ni{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(42,48,80,.3)}
+.ni:last-child{border-bottom:none}
+.tp{display:none}.tp.on{display:block;animation:fi .25s ease}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.stl{font-size:12px;font-weight:700;color:var(--tx2);margin:14px 0 8px}
+.note-text{font-size:11px;color:var(--tx2);line-height:1.5;white-space:pre-wrap;max-height:80px;overflow-y:auto}
+.lnk{color:var(--ac);text-decoration:none;font-size:11px}.lnk:hover{text-decoration:underline}
+
+@media(max-width:1024px){.g2{grid-template-columns:1fr}.ct{padding:12px}}
+@media(max-width:640px){.hd{padding:0 12px}.tabs{padding:0 12px}}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+.bd-cat1{background:rgba(91,141,249,.15);color:var(--ac)}
+.bd-cat2{background:rgba(244,114,182,.15);color:var(--pink)}
+.bd-cat3{background:rgba(251,191,36,.13);color:var(--yel)}
+.more-btn{background:none;border:none;color:var(--ac);font-size:10px;cursor:pointer;padding:0 2px;font-family:inherit;text-decoration:underline}
+.more-btn:hover{color:var(--pur)}
+.cal-ev.pr-sched{background:rgba(91,141,249,.12);color:var(--ac)}
+.cal-ev.sns-sched{background:rgba(244,114,182,.12);color:var(--pink)}
+.cal-ev.forum{background:rgba(251,191,36,.13);color:var(--yel)}
+.cal-ev.biz-meeting{background:rgba(34,211,238,.1);color:var(--cyan)}
+.st.filter-able{cursor:pointer;transition:.15s;user-select:none}
+.st.filter-able:hover{border-color:var(--ac)}
+.st.filter-on{border:1px solid var(--ac)!important;box-shadow:0 0 0 2px rgba(91,141,249,.2)}
+.inv-done{text-decoration:line-through;opacity:.45}
+</style>
+</head>
+<body>
+<div class="hd"><div class="hd-in">
+  <div class="logo"><span class="logo-b">PR</span>COSMAX PR팀 업무 대시보드</div>
+  <div class="hd-r">
+    <span class="live" id="liveS">LIVE</span>
+    <span class="hd-date" id="hdD"></span>
+    <button class="rbtn" onclick="location.reload()">↻ 새로고침</button>
+  </div>
+</div></div>
+<div class="tw"><div class="tabs" id="tBar"></div></div>
+<div class="ct" id="panels"></div>
+
+<script>
+// Cache version - bump this to invalidate all existing caches
+const CACHE_VERSION='v2026-04-11-r13-fixes';
+// Restore live data from cache BEFORE defining D
+let _cached=null;
+try{
+  const c=sessionStorage.getItem('cosmax_live');
+  const v=sessionStorage.getItem('cosmax_live_version');
+  if(c&&v===CACHE_VERSION){
+    _cached=JSON.parse(c);
+    // Validate: if outing data is empty/missing real schedules, invalidate
+    const ot=_cached&&_cached.outing;
+    const hasRealOuting=ot&&ot.timeSlots&&ot.timeSlots.some(s=>s.person0_schedule||s.person1_schedule||s.person2_schedule||s.person3_schedule);
+    if(!hasRealOuting){_cached=null;sessionStorage.removeItem('cosmax_live');console.log('Cache invalidated: empty outing')}
+  }
+  else if(c){sessionStorage.removeItem('cosmax_live');console.log('Cache invalidated: old version')}
+}catch(e){}
+
+const D = _cached || {"today_tasks":[{"category":"기타","media":"HR","content":"웍스AI 교육(이미지 및 영상 생성)","person":"권이윤","deadline":"예정/준비","status":"답변 대기"},{"category":"언론미팅","media":"아시아타임스","content":"김민솔 기자-티","person":"이성웅","deadline":"예정/준비","status":null}],"today_important":[{"category":"기획기사","media":"미정","content":"국가대표 제조사 앵글","person":"이성웅","deadline":"2026-03-13 00:00","status":"진행중"},{"category":"내부보고","media":"회장님","content":"강의 교안 수정","person":"이성웅","deadline":"2026-03-30 00:00","status":"진행중"}],"today_news":[{"media":"아시아경제","title":"[클릭 e종목]\"코스맥스, 제품 믹스 변화로 단기 수익성 둔화\" - 아시아경제","keyword":"코스맥스"},{"media":"MTN 머니투데이방송","title":"[단독] '나프타 쇼크'에 '글리세린' 가격인상까지…떨고있는 K뷰티 - MTN 머니투데이방송","keyword":"K뷰티"},{"media":"서울경제신문","title":"콜마비앤에이치, 10개국 주한대사 초청해 ‘K뷰티·헬스케어’ 교류 - 서울경제신문","keyword":"K뷰티"},{"media":"서울신문","title":"비오레, 트와이스 사나 국내 메인 모델로 발탁…K-뷰티 공략 - 서울신문","keyword":"K뷰티"},{"media":"서울경제TV","title":"한국콜마, 제약기술 융합…글로벌 뷰티 시장 홀렸다 - 서울경제TV","keyword":"한국콜마"},{"media":"동아일보","title":"이탈리아 ODM 기업 인수… “유럽 뷰티 시장 공략” - 동아일보","keyword":"코스맥스"},{"media":"한국경제","title":"세계 최대' 노르웨이 '큰손' 쓸어담은 한국 주식 뭐길래 - 한국경제","keyword":"코스맥스"},{"media":"한국경제","title":"증시 고됐던 3월, 국민연금이 담은 종목은 - 한국경제","keyword":"코스맥스"},{"media":"매일경제 마켓","title":"코스피 상승률 상위 50종목 - 매일경제 마켓","keyword":"코스맥스"},{"media":"매일경제 마켓","title":"코스피 상승률 상위 50종목 - 매일경제 마켓","keyword":"코스맥스"},{"media":"매일경제 마켓","title":"코스피 하락률 상위 20종목(직전 30분 기준) - 매일경제 마켓","keyword":"코스맥스"},{"media":"매일경제 마켓","title":"코스피 하락률 상위 20종목(직전 30분 기준) - 매일경제 마켓","keyword":"코스맥스"},{"media":"매일경제 마켓","title":"1억원 이상 매수체결 상위 20 종목(코스피) - 매일경제 마켓","keyword":"코스맥스"},{"media":"매일경제","title":"남미에 K뷰티 알린다…큐라펄스, 브라질 의료기기 기업과 MOA - 매일경제","keyword":"K뷰티"}],"tasks_progress":[{"no":"004","category":"촬영","media":"프롬리에","content":"앰플미스트 신상 홍보 콘텐츠 촬영","priority":"⭐️보통","deadline":"2026-03-10 00:00","person":"이남정","status":"예정/준비","progress":null,"note":"고객사 일정 변경으로 대기 중"},{"no":null,"category":"기획기사","media":"미정","content":"마이크로바이옴 특집 자료 작성","priority":"⭐️보통","deadline":"2026-03-20 00:00","person":"권이윤","status":"예정/준비","progress":null,"note":"3/16 MB랩 답변 수신"},{"no":"024","category":"제작/업로드","media":"네오베아","content":"<네오베아 신제품 개발 프로젝트> EP.1 제작","priority":"⭐️보통","deadline":"2026-03-27 00:00","person":"이남정","status":"예정/준비","progress":null,"note":"업로드예정일 3/19"},{"no":"035","category":"기타","media":null,"content":"그룹 상반기 공채 기간(3/23~4/6)","priority":"⭐️보통","deadline":null,"person":"팀","status":"예정/준비","progress":null,"note":null},{"no":"042","category":"기획기사","media":"미정","content":"국가대표 제조사 앵글","priority":"🔥중요","deadline":"2026-03-13 00:00","person":"이성웅","status":"진행중","progress":null,"note":null},{"no":"046","category":"제작/업로드","media":"사내","content":"PW랩 지원) 사내 이벤트 진행","priority":"⭐️보통","deadline":"2026-03-25 00:00","person":"이남정","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"촬영","media":"사내","content":"인사팀 촬영 지원 / 임직원 채용 인터뷰","priority":"⭐️보통","deadline":"2026-03-23 00:00","person":"이남정","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"제작/업로드","media":"무지개맨션","content":"신상 홍보 콘텐츠 제작 및 업로드","priority":"⭐️보통","deadline":"2026-03-24 00:00","person":"이남정","status":"예정/준비","progress":null,"note":null},{"no":"057","category":"고객사미팅","media":"페리페라","content":"저녁","priority":"⭐️보통","deadline":"2026-03-27 00:00","person":"이남정","status":"예정/준비","progress":null,"note":null},{"no":"058","category":"기타","media":"인사운영팀","content":"채용 홈페이지 사진 촬영 지원","priority":"⭐️보통","deadline":"2026-03-23 00:00","person":"이남정","status":"예정/준비","progress":null,"note":null},{"no":"059","category":"촬영","media":"홀리덕","content":"인플루언서 협업 콘텐츠 추가 촬영(공항)","priority":"⭐️보통","deadline":"2026-03-24 00:00","person":"이남정","status":"예정/준비","progress":null,"note":null},{"no":"061","category":"언론미팅","media":"IB토마토","content":"포럼 참석","priority":"⭐️보통","deadline":"2026-03-25 00:00","person":"이성웅","status":"예정/준비","progress":null,"note":null},{"no":"066","category":"보도자료","media":"중국법인","content":"글로벌 거점 기업 선정","priority":"⭐️보통","deadline":"2026-03-25 00:00","person":"이성웅","status":"진행중","progress":null,"note":"배포예정일 3/27"},{"no":null,"category":"기타","media":"HR","content":"웍스AI 교육(이미지 및 영상 생성)","priority":"⭐️보통","deadline":"2026-04-01 00:00","person":"권이윤","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"대한경제","content":"팀 미팅","priority":null,"deadline":"2026-04-08 00:00","person":"팀","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"한국경제","content":"팀 미팅","priority":null,"deadline":"2026-04-09 00:00","person":"팀","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"기타","media":"기부약정식","content":"WYD 선제품 후원 (카톨릭학원)","priority":null,"deadline":"2026-04-14 00:00","person":"팀","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"문화일보","content":"점심 미팅 (조정 필요)","priority":null,"deadline":"2026-04-14 00:00","person":"팀","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"마이데일리","content":null,"priority":"⭐️보통","deadline":"2026-03-31 00:00","person":"팀","status":"예정/준비","progress":null,"note":"임영롱,이성웅"},{"no":null,"category":"내부보고","media":"회장님","content":"강의 교안 수정","priority":"🔥중요","deadline":"2026-03-30 00:00","person":"이성웅","status":"진행중","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"아주경제","content":"조재형 기자","priority":"⭐️보통","deadline":"2026-04-07 00:00","person":"이성웅","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"대한경제","content":"문수아 기자","priority":"⭐️보통","deadline":"2026-04-08 00:00","person":"이성웅","status":"예정/준비","progress":null,"note":"실장님 동행"},{"no":null,"category":"언론미팅","media":"뉴스1","content":"오재일 기자","priority":"⭐️보통","deadline":"2026-04-09 00:00","person":"이성웅","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"뉴스핌","content":"포럼","priority":"⭐️보통","deadline":"2026-04-09 00:00","person":"이성웅","status":"예정/준비","progress":null,"note":"팀장님 동행"},{"no":null,"category":"언론미팅","media":"문화일보","content":"최준영 팀장","priority":"⭐️보통","deadline":"2026-04-14 00:00","person":"이성웅","status":"예정/준비","progress":null,"note":"실장님 동행"},{"no":null,"category":"언론미팅","media":"이투데이","content":"황민주 기자","priority":"⭐️보통","deadline":"2026-04-15 00:00","person":"이성웅","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"브릿지경제","content":"홍선혜 기자","priority":"⭐️보통","deadline":"2026-04-16 00:00","person":"이성웅","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"CEO스코어데일리","content":"박주선 기자","priority":"⭐️보통","deadline":"2026-04-17 00:00","person":"이성웅","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"딜사이트","content":"권재윤 기자","priority":"⭐️보통","deadline":"2026-04-03 00:00","person":"권이윤","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"파이낸셜뉴스","content":"김현지 기자","priority":"⭐️보통","deadline":"2026-04-07 00:00","person":"권이윤","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"서울파이낸스","content":"권서현 기자","priority":"⭐️보통","deadline":"2026-04-08 00:00","person":"권이윤","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"한국경제","content":"팀미팅","priority":"⭐️보통","deadline":"2026-04-09 00:00","person":"팀","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"전자신문","content":"정다은 기자","priority":"⭐️보통","deadline":"2026-04-10 00:00","person":"권이윤","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"로이터통신","content":"이정윤 기자","priority":"⭐️보통","deadline":"2026-04-13 00:00","person":"권이윤","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"기타","media":"HR","content":"G2 승진자 교육","priority":"⭐️보통","deadline":"2026. 4. 16~17","person":"권이윤","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"동행미디어 시대","content":"팀미팅","priority":"⭐️보통","deadline":"2026-04-20 00:00","person":"팀","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"서울경제","content":"팀미팅","priority":"⭐️보통","deadline":"2026-04-21 00:00","person":"팀","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"한국일보","content":"팀미팅","priority":"⭐️보통","deadline":"2026-04-22 00:00","person":"팀","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"소비자가만드는신문","content":"이정민 기자","priority":"⭐️보통","deadline":"2026-04-23 00:00","person":"권이윤","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"쿠키뉴스","content":"임지혜 부장, 심하연 기자","priority":"⭐️보통","deadline":"2026-04-28 00:00","person":"팀","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"청년일보","content":"권하영 기자","priority":"⭐️보통","deadline":"2026-04-30 00:00","person":"권이윤","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"언론미팅","media":"아시아타임스","content":"김민솔 기자-티","priority":"⭐️보통","deadline":"2026-04-01 00:00","person":"이성웅","status":"예정/준비","progress":null,"note":null},{"no":null,"category":"기타","media":"HR","content":"웍스 AI 교육-오전","priority":"⭐️보통","deadline":"2026-04-13 00:00","person":"이성웅","status":"예정/준비","progress":null,"note":null}],"tasks_done":[{"no":1.0,"category":"보도자료","media":"인사운영팀","content":"인사제도 / AI 교육 운영 성과 자료 작성","priority":"🔥중요","deadline":"2026-03-31 00:00","person":"권이윤","status":"완료","progress":"유관부서 컨펌 대기","note":"3/11 인사운영팀 미팅, 3/13 1차, 3/18 2차 기획자료 작성 완료 "},{"no":56.0,"category":"기획기사","media":"동아일보","content":"코스맥스, 伊 ‘케미노바’ 품고 뷰티 본고장 입성…아시아·북미·유럽 잇는 ‘글로벌 뷰티 영토’ 완성","priority":"🔥중요","deadline":"2026-03-25 00:00","person":"이성웅","status":"완료","progress":null,"note":"전달"},{"no":63.0,"category":"취재응대","media":"동아일보","content":"김다연 기자 - 펫 시장 공략","priority":"🔥중요","deadline":"2026-03-23 00:00","person":"이성웅","status":"완료","progress":null,"note":"<코스맥스펫 회사 개요 및 주요 기술>\n◇설립 : 2022년 5월 \n\n◇공장소재지 : 충북 괴산\n- 충북 증평2일반산단 내 신규 생산공장 준비 중(400억원 투자)\n  →펫뷰티와 펫푸드를 아우르는 토털 펫케어 기업 지향\n\n◇매출\n- 2023년 26억원\n- 2024년 46억원\n- 2025년 85억원\n\n◇고객사\n총 140여곳\n-주요 고객사 : 유한양행, 사조동아원, 하림펫푸드, 대웅펫, 페스룸, 깨끗한나라\n\n◇구성\n- 헬스케어 랩\n근거 기반 제품 개발: 안정성·유효성 중심의 신뢰도 확보​\n고품질 제품 제조: 인체 건기식 수준의 원료 및 설비 적용​\n맞춤형 제형 지원: 펠릿, 정제, 액상 등 다양한 옵션 제공\n\n-그루밍 랩\n펫 특화·특허 소재: 반려견 세포 및 AI 인공 피부 모델 기반 효능 검증​\n전문성 확보: 수의대 피부과 전문의와의 지속적인 공동 연구​\n반려동물 맞춤형 소재 제공: 눈물자국 케어, 모질 개선, 항산화 등 니즈 대응\n\n◇헬스케어 제형\n- 식물성 연질캡슐, 츄어블 정제, 하드캡슐, 소형정제, 펠릿, 필포켓(약을 숨겨서 급여 가능한 트릿 간식) 등\n\n◇코스맥스 독자 특허 반려동물 피모 전용 소개\n: 총 17종 전용 소재 보유, 강아지 피부세포로 반려견 피부환경을 구현해 소재 효능 평가\n반려견 피부 세포, AI 인공 피부 모델투을 개발해 효능 입증\n- 퍼피세라 : 사람용 세라마이드가 아닌 반려동물 특화 세라마이드로 가려움증 개선 및 보습 효과, 헤어 윤기 개선\n- 펫페리아 : 반려동물 피부 마이크로바이옴\n- 스노우화이트 : 눈물자국 케어 소재\n\n◇그루밍 제형\n- 헤어샴푸, 풋 샴푸, 트리트먼트, 입욕제, 눈물자국 세정제, 치약, 미끄럼 방지 젤, 펫 미스트, 펫 헤어팩 등 20여종\n"},{"no":64.0,"category":"취재응대","media":"헤럴드경제","content":"홍석희 팀장 - 봄맞이 선케어 시장 공략","priority":"🔥중요","deadline":"2026-03-23 00:00","person":"이성웅","status":"완료","progress":null,"note":"기획자료 전달"},{"no":65.0,"category":"기획기사","media":"미정","content":"(기획자료-v1)코스맥스, K뷰티 수출 견인차 역할 ‘톡톡’…영토 확대로 '글로벌 1위' 굳힌다","priority":"⭐️보통","deadline":"2026-03-23 00:00","person":"이성웅","status":"완료","progress":null,"note":"내부 공유"},{"no":62.0,"category":"내부보고","media":"해외영업부문","content":"케미노바 회장님 축사 번역","priority":"⭐️보통","deadline":"2026-03-23 00:00","person":"권이윤","status":"완료","progress":null,"note":"3/23 초안 기준 번역 완료 후 메일 송부"},{"no":25.0,"category":"언론미팅","media":"톱데일리","content":"류세나 부장, 박성민 차장","priority":"⭐️보통","deadline":"2026-03-20 00:00","person":"팀","status":"완료","progress":null,"note":"실장님과 저녁 미팅 어레인지 요청"},{"no":55.0,"category":"촬영","media":"RA","content":"식약처 방문건 사진촬영","priority":"🔥중요","deadline":"2026-03-19 00:00","person":"이성웅","status":"완료","progress":null,"note":null},{"no":37.0,"category":"촬영","media":"사내(PW 이호성 선임)","content":"<뷰티회사 관찰일기_PW랩 촬영>","priority":"⭐️보통","deadline":"2026-03-19 00:00","person":"이남정","status":"완료","progress":null,"note":null},{"no":47.0,"category":"기타","media":"스킨푸드","content":"만우절 콘텐츠 기획안 제작","priority":"⭐️보통","deadline":"2026-03-19 00:00","person":"이남정","status":"완료","progress":null,"note":null},{"no":52.0,"category":"취재응대","media":"뉴시스","content":"오제일 팀장 - 연합 ODM 매출 기사 추종보도 건","priority":"⭐️보통","deadline":"2026-03-18 00:00","person":"이성웅","status":"완료","progress":null,"note":"시장 현황 및 기사 포인트 설명"},{"no":21.0,"category":"언론미팅","media":"한겨레","content":"정인선 기자","priority":"⭐️보통","deadline":"2026-03-18 00:00","person":"권이윤","status":"완료","progress":null,"note":"20일 한겨례 인사 변동 예정, 경제산업부장인 노현웅 부장 인품이 좋아서 관련 부서 지원자가 많다고 함. "},{"no":20.0,"category":"언론미팅","media":"녹색경제신문","content":"조아라 기자","priority":"⭐️보통","deadline":"2026-03-17 00:00","person":"권이윤","status":"완료","progress":null,"note":"기존 담당 서영광 기자 식음료, 채널 주력, 조기자가 뷰티/패션 1진 담당, 정치부 인턴 경험, 이전에는 IT+산업 출입, 91년생, 4년차, 상암 거주, 20대에 화장품 좋아하고 관심도 높았음, 관련 커뮤니티 등 모니터링 해 취재"},{"no":49.0,"category":"취재응대","media":"일간스포츠","content":"하버 베컴 및 헤일리 비버 브랜드 관련 문의","priority":"🔥중요","deadline":"2026-03-17 00:00","person":"이성웅","status":"완료","progress":null,"note":"자사 진행 프로젝트, NDA로 기자에겐 확인 어렵다 회신"},{"no":50.0,"category":"취재응대","media":"톱데일리","content":"박성민 기자 - NBT 주총 건","priority":"🔥중요","deadline":"2026-03-17 00:00","person":"이성웅","status":"완료","progress":null,"note":"시장 상황 개선에 따른 회복 기대감 전달 및 드라이한 논조 요청"},{"no":51.0,"category":"취재응대","media":"이데일리","content":"김응태 기자 - NBT 주총 건","priority":"🔥중요","deadline":"2026-03-17 00:00","person":"이성웅","status":"완료","progress":null,"note":"시장 상황 개선에 따른 회복 기대감 전달 및 드라이한 논조 요청"},{"no":19.0,"category":"언론미팅","media":"뷰어스","content":"내미림 기자","priority":"⭐️보통","deadline":"2026-03-17 00:00","person":"이성웅","status":"완료","progress":null,"note":"매일일보 다니다가 개인 사업 위해 퇴사. 코로나 때 골프용품 사업 시작했다가 사업 커지면서 매각하고 휴식하다가 뷰어스로 복귀. 아이뉴스 박은경, 데일리안 임유정과 친분"},{"no":54.0,"category":"언론미팅","media":"아이뉴스24","content":"박은경 기자","priority":"⭐️보통","deadline":"2026-03-17 00:00","person":"팀","status":"완료","progress":null,"note":"최근 뷰티 트렌드 공유, 아이뉴스24는 인원이 많아 4월 네이버 개편 이후에도 보도자료 기사는 줄이지 않고 지금과 동일하게 운영할 예정, 4/1 만우절 SNS 캠페인 기획 자료 PR 협의"},{"no":5.0,"category":"기타","media":"PR팀","content":"홍보현황 리스트 업데이트(~현재)","priority":"⭐️보통","deadline":"2026-03-16 00:00","person":"권이윤","status":"완료","progress":null,"note":null},{"no":36.0,"category":"고객사미팅","media":"스킨푸드","content":"만우절 콘텐츠 기획 미팅(안세진 팀장 동행)","priority":"⭐️보통","deadline":"2026-03-16 00:00","person":"이남정","status":"완료","progress":null,"note":null}],"cal_data":[["2026-03-29 00:00","2026-03-30 00:00","2026-03-31 00:00","2026-04-01 00:00","2026-04-02 00:00","2026-04-03 00:00","2026-04-04 00:00"],[null,"🔹회장님(이성웅)","🔹마이데일리(팀)","🔹HR(권이윤)\n🔹아시아타임스(이성웅)",null,"🔹딜사이트(권이윤)",null],["2026-04-05 00:00","2026-04-06 00:00","2026-04-07 00:00","2026-04-08 00:00","2026-04-09 00:00","2026-04-10 00:00","2026-04-11 00:00"],[null,null,"🔹아주경제(이성웅)\n🔹파이낸셜뉴스(권이윤)","🔹대한경제(팀)\n🔹대한경제(이성웅)\n🔹서울파이낸스(권이윤)","🔹한국경제(팀)\n🔹뉴스1(이성웅)\n🔹뉴스핌(이성웅)\n🔹한국경제(팀)","🔹전자신문(권이윤)",null],["2026-04-12 00:00","2026-04-13 00:00","2026-04-14 00:00","2026-04-15 00:00","2026-04-16 00:00","2026-04-17 00:00","2026-04-18 00:00"],[null,"🔹로이터통신(권이윤)\n🔹HR(이성웅)","🔹기부약정식(팀)\n🔹문화일보(팀)\n🔹문화일보(이성웅)","🔹이투데이(이성웅)","🔹브릿지경제(이성웅)","🔹CEO스코어데일리(이성웅)",null],["2026-04-19 00:00","2026-04-20 00:00","2026-04-21 00:00","2026-04-22 00:00","2026-04-23 00:00","2026-04-24 00:00","2026-04-25 00:00"],[null,"🔹동행미디어 시대(팀)","🔹서울경제(팀)","🔹한국일보(팀)","🔹소비자가만드는신문(권이윤)",null,null],["2026-04-26 00:00","2026-04-27 00:00","2026-04-28 00:00","2026-04-29 00:00","2026-04-30 00:00","2026-05-01 00:00","2026-05-02 00:00"],[null,null,"🔹쿠키뉴스(팀)",null,"🔹청년일보(권이윤)",null,null],["2026-05-03 00:00","2026-05-04 00:00","2026-05-05 00:00","2026-05-06 00:00","2026-05-07 00:00","2026-05-08 00:00","2026-05-09 00:00"]],"monthly":[{"media":"조선일보","sub":null,"received":3000.0,"v1":3000.0,"v2":2000.0,"note":"이과장 협의,섹션_선크림 (이성웅)","cumulative26":3000,"monthly25":2000.0,"cumulative25":3000,"annual25":7500},{"media":"동아일보","sub":null,"received":1000.0,"v1":1000.0,"v2":1000,"note":"특집_케미노바 (이성웅)","cumulative26":1000,"monthly25":1000.0,"cumulative25":1000,"annual25":6200},{"media":"매일경제","sub":"국민보고대회","received":1500.0,"v1":2000.0,"v2":2000.0,"note":null,"cumulative26":2440,"monthly25":1500.0,"cumulative25":4500,"annual25":6800},{"media":"이투데이","sub":null,"received":500.0,"v1":500.0,"v2":500,"note":null,"cumulative26":500,"monthly25":300.0,"cumulative25":300,"annual25":800},{"media":"파이낸셜뉴스","sub":null,"received":500.0,"v1":500.0,"v2":500,"note":"HR 채용 (권이윤)","cumulative26":800,"monthly25":500.0,"cumulative25":500,"annual25":800},{"media":"뉴스1","sub":"터닝포인트 구독-책자","received":200.0,"v1":200.0,"v2":200,"note":null,"cumulative26":200,"monthly25":200.0,"cumulative25":400,"annual25":3500},{"media":"머니S","sub":"동행미디어 시대","received":300.0,"v1":300.0,"v2":300,"note":null,"cumulative26":300,"monthly25":300.0,"cumulative25":300,"annual25":2100},{"media":"MTN","sub":null,"received":500.0,"v1":"300 협의","v2":300.0,"note":"이과장-실장님 협의","cumulative26":300,"monthly25":300.0,"cumulative25":800,"annual25":1700},{"media":"시사캐스트","sub":null,"received":300.0,"v1":300.0,"v2":300,"note":"스토리텔링 자료","cumulative26":300,"monthly25":300.0,"cumulative25":300,"annual25":300},{"media":"포인트데일리","sub":null,"received":300.0,"v1":"-","v2":"-","note":null,"cumulative26":"-","monthly25":"-","cumulative25":0,"annual25":400},{"media":"뉴스워커","sub":null,"received":300.0,"v1":300.0,"v2":300,"note":null,"cumulative26":300,"monthly25":"-","cumulative25":0,"annual25":600},{"media":"비즈트리뷴","sub":null,"received":300.0,"v1":300.0,"v2":300,"note":"스토리텔링 자료","cumulative26":300,"monthly25":300.0,"cumulative25":300,"annual25":300},{"media":"뉴스핌","sub":null,"received":500.0,"v1":"300 협의","v2":300.0,"note":"이과장 협의, 스토리텔링 자료","cumulative26":800,"monthly25":300.0,"cumulative25":800,"annual25":1200},{"media":"주간신문CMN","sub":"창간 명함광고","received":30.0,"v1":30.0,"v2":30,"note":null,"cumulative26":460,"monthly25":"-","cumulative25":900,"annual25":2500},{"media":"마일드경제","sub":null,"received":200.0,"v1":"-","v2":"-","note":null,"cumulative26":"-","monthly25":"-","cumulative25":"-","annual25":"-"},{"media":"제보팀장","sub":null,"received":300.0,"v1":"-","v2":"-","note":null,"cumulative26":"-","monthly25":"-","cumulative25":0,"annual25":300},{"media":"톱데일리","sub":null,"received":500.0,"v1":"대기","v2":300.0,"note":"실장님 협의","cumulative26":300,"monthly25":"-","cumulative25":300,"annual25":600},{"media":"조선비즈","sub":null,"received":1000.0,"v1":"-","v2":"-","note":null,"cumulative26":"-","monthly25":"-","cumulative25":0,"annual25":900},{"media":"핀포인트뉴스","sub":null,"received":" ","v1":"대기","v2":"-","note":null,"cumulative26":"-","monthly25":"-","cumulative25":"-","annual25":"-"},{"media":"IT조선","sub":null,"received":300.0,"v1":"-","v2":"-","note":null,"cumulative26":"-","monthly25":"-","cumulative25":0,"annual25":300},{"media":"딜사이트TV","sub":null,"received":500.0,"v1":"-","v2":"-","note":null,"cumulative26":"-","monthly25":"-","cumulative25":0,"annual25":600},{"media":"매경이코노미","sub":null,"received":"-","v1":"-","v2":"-","note":null,"cumulative26":"-","monthly25":200.0,"cumulative25":1500,"annual25":3400},{"media":"MBN","sub":null,"received":"-","v1":100.0,"v2":100.0,"note":null,"cumulative26":100,"monthly25":100.0,"cumulative25":100,"annual25":400},{"media":"시장경제","sub":null,"received":"-","v1":"-","v2":"-","note":null,"cumulative26":"-","monthly25":200.0,"cumulative25":500,"annual25":1000},{"media":"투데이신문","sub":null,"received":"-","v1":300.0,"v2":"-","note":"스토리텔링 자료","cumulative26":"-","monthly25":300.0,"cumulative25":300,"annual25":600},{"media":"프레스맨","sub":null,"received":"-","v1":300.0,"v2":"-","note":"스토리텔링 자료","cumulative26":"-","monthly25":300.0,"cumulative25":300,"annual25":600},{"media":"더구루","sub":null,"received":"-","v1":300.0,"v2":300.0,"note":null,"cumulative26":300,"monthly25":300.0,"cumulative25":300,"annual25":300},{"media":"스포츠조선","sub":null,"received":"-","v1":300.0,"v2":300.0,"note":"스토리텔링 자료","cumulative26":300,"monthly25":300.0,"cumulative25":300,"annual25":300},{"media":"FETV","sub":null,"received":"-","v1":300.0,"v2":300.0,"note":null,"cumulative26":300,"monthly25":300.0,"cumulative25":300,"annual25":300},{"media":"일요신문","sub":"실장님","received":"-","v1":500.0,"v2":500.0,"note":null,"cumulative26":500,"monthly25":"-","cumulative25":0,"annual25":1100},{"media":"캐치뉴스","sub":"실장님","received":"-","v1":300.0,"v2":"-","note":null,"cumulative26":"-","monthly25":"-","cumulative25":"-","annual25":"-"},{"media":"뉴스웰","sub":"실장님","received":null,"v1":"대기","v2":"-","note":null,"cumulative26":"-","monthly25":"-","cumulative25":"-","annual25":"-"},{"media":"팜뉴스","sub":"실장님","received":"-","v1":"대기","v2":"-","note":null,"cumulative26":"-","monthly25":"-","cumulative25":0,"annual25":200},{"media":"아시아투데이","sub":null,"received":null,"v1":null,"v2":300.0,"note":"4월 지면 볼로냐 (이병주 대표님)","cumulative26":300,"monthly25":null,"cumulative25":0,"annual25":800},{"media":"현대경제","sub":null,"received":200.0,"v1":"-","v2":"-","note":"임팀장 상반기 고려","cumulative26":"-","monthly25":"-","cumulative25":"-","annual25":"-"},{"media":"장업신문(약국신문)","sub":null,"received":null,"v1":50.0,"v2":50.0,"note":"금액 확인","cumulative26":"-","monthly25":null,"cumulative25":"-","annual25":"-"},{"media":"데일리팝","sub":null,"received":300.0,"v1":null,"v2":300.0,"note":null,"cumulative26":300,"monthly25":"-","cumulative25":300,"annual25":1000},{"media":"합계","sub":null,"received":12530,"v1":10880,"v2":10480,"note":null,"cumulative26":13100,"monthly25":9000,"cumulative25":17300,"annual25":47400}],"outing":{"date":"2026-04-01 00:00","members":["임영롱","이성웅","권이윤","이남정"],"timeSlots":[{"from":"08:00","to":"09:00","person0_schedule":null,"person0_place":null,"person1_schedule":null,"person1_place":null,"person2_schedule":null,"person2_place":null,"person3_schedule":null,"person3_place":null},{"from":"10:00","to":"11:00","person0_schedule":null,"person0_place":null,"person1_schedule":null,"person1_place":null,"person2_schedule":null,"person2_place":null,"person3_schedule":null,"person3_place":null},{"from":"11:00","to":"12:00","person0_schedule":null,"person0_place":null,"person1_schedule":null,"person1_place":null,"person2_schedule":null,"person2_place":null,"person3_schedule":null,"person3_place":null},{"from":"12:00","to":"13:00","person0_schedule":null,"person0_place":null,"person1_schedule":null,"person1_place":null,"person2_schedule":null,"person2_place":null,"person3_schedule":null,"person3_place":null},{"from":"13:00","to":"14:00","person0_schedule":null,"person0_place":null,"person1_schedule":null,"person1_place":null,"person2_schedule":null,"person2_place":null,"person3_schedule":null,"person3_place":null},{"from":"14:00","to":"15:00","person0_schedule":null,"person0_place":null,"person1_schedule":null,"person1_place":null,"person2_schedule":null,"person2_place":null,"person3_schedule":null,"person3_place":null},{"from":"15:00","to":"16:00","person0_schedule":null,"person0_place":null,"person1_schedule":null,"person1_place":null,"person2_schedule":null,"person2_place":null,"person3_schedule":null,"person3_place":null},{"from":"16:00","to":"17:00","person0_schedule":null,"person0_place":null,"person1_schedule":null,"person1_place":null,"person2_schedule":null,"person2_place":null,"person3_schedule":null,"person3_place":null},{"from":"17:00","to":"-","person0_schedule":null,"person0_place":null,"person1_schedule":null,"person1_place":null,"person2_schedule":null,"person2_place":null,"person3_schedule":null,"person3_place":null}]},"meetings":[{"no":"1","date":"2026-02-24 00:00","time":"점심","media":"인사이트코리아","attendees":"국장 티미팅","person":"이성웅","notes":"네이버 뉴스 제평위 평가 기간 돌입에 따른 고충\n보도자료 작성을 두고 CP 진입과 기업과의 관계 사이에서 고심\n이상훈 부장 - 제약바이오 10년 하다가 대웅제약 홍보 1년반 경험","followup":null},{"no":"2","date":"2026-02-25 00:00","time":"점심","media":"파이낸셜뉴스","attendees":"팀 미팅","person":"팀","notes":"K-푸드쇼 5월 진행 예정(AT센터) 부스 참여 요청","followup":null},{"no":"3","date":"2026-02-26 00:00","time":"점심","media":"IB토마토","attendees":"최용민 부장","person":"이성웅","notes":null,"followup":null},{"no":"4","date":"2026-02-26 00:00","time":"점심","media":"사내(PW랩)","attendees":"파우더 이벤트 미팅","person":"이남정","notes":null,"followup":null},{"no":"5","date":"2026-02-27 00:00","time":"점심","media":"한스경제","attendees":"양지원 팀장","person":"권이윤","notes":"4월 이후 출산휴가, 별도 충원 없이 이현정 기자(85년생, 아나운서&한양경제 출신), 하지현 기자(97년생)가 나눠서 커버 예정","followup":null},{"no":"6","date":"2026-02-27 00:00","time":"점심","media":"오늘경제","attendees":"한동녘 기자","person":"이성웅","notes":null,"followup":null},{"no":"7","date":"2026-03-03 00:00","time":"점심","media":"SBS비즈","attendees":"이정민 기자","person":"이성웅","notes":null,"followup":null},{"no":"8","date":"2026-03-04 00:00","time":"점심","media":"아시아경제","attendees":"지연진 부장","person":"팀","notes":"회장님 인터뷰 요청","followup":null},{"no":"9","date":"2026-03-06 00:00","time":"티타임","media":"중소기업신문","attendees":"조민선 기자","person":"권이윤","notes":"의원실 근무, 홍보(스포츠) 담당하다가 기자 전직, 혼자 유통 전체 커버하고 별도 데스킹 없이 출고 방식, 대표 > 평기자 대상 영업 압박 존재","followup":null},{"no":"10","date":"2026-03-09 00:00","time":"점심","media":"매경닷컴","attendees":"김혜진 기자","person":"이성웅","notes":"정치부 계속하다가 산업섹터 처음. 방영덕 기자랑 둘이 뷰티 담당. 업계 스테이터스 등 전반 설명","followup":null},{"no":"11","date":"2026-03-09 00:00","time":"저녁","media":"더벨","attendees":"안준호 기자(저)","person":"이성웅","notes":"더벨 시스템 변화로 기사 출고시 네이버에도 동시 표출. 기사 일부만 공개되고 시간 지난 후 전체 공개된다고.","followup":null},{"no":"12","date":"2026-03-10 00:00","time":"점심","media":"데일리안","attendees":"임유정 기자","person":"이성웅","notes":"10년째 유통업계 정보 단톡방 운영 중. 9~10월에 올리브영에서 미국 출장 계획 중이라고","followup":null},{"no":"13","date":"2026-03-12 00:00","time":"점심","media":"한국경제TV","attendees":"이서후 기자","person":"권이윤","notes":"96년생, 사회학전공, 이대 근처 거주, 박승원 기자와 둘이 유통+항공 담당, 기존에는 제약/바이오 담당했음, 글로벌 1위 지위 등 강조","followup":"박승원 기자 - 저녁 미팅 요청(점심 약속은 방송으로 변동성 多)"},{"no":"14","date":"2026-03-13 00:00","time":"점심","media":"현대경제신문","attendees":"박명섭 부국장, 최효경 기자","person":"권이윤","notes":"3월 창간 광고 공문 송부 예정, 국장과 미팅 어레인지 요청","followup":null},{"no":null,"date":"2026-03-11 00:00","time":"티타임","media":"스마트타임즈","attendees":"이용석 대표","person":"임영롱","notes":"네이버 제휴위원회 개편에 따른 전망/분위기, 4월 개편 이후 상황 지켜봐야, 7월에 시행될 정보통신망법 파급 효과도 중요함","followup":null},{"no":null,"date":"2026-03-11 00:00","time":"티타임","media":"아시아투데이","attendees":"김지혜 부장, 정문경 기자","person":"임영롱","notes":"부임 인사, 근황 공유, 5/28 저녁미팅 요청","followup":null},{"no":null,"date":"2026-03-11 00:00","time":null,"media":"비즈워치","attendees":"팀 점심","person":"팀","notes":null,"followup":null},{"no":null,"date":"2026-03-12 00:00","time":"점심","media":"한국경제TV","attendees":"이서후 기자","person":"권이윤","notes":null,"followup":null},{"no":null,"date":"2026-03-12 00:00","time":"점심","media":"남다른디테일","attendees":"창간기념식","person":"이성웅","notes":"유통 섹터 30~40여개 기업 참석. 중간에 퀴즈 타임있었는데 남디 콘텐츠 조회수 관련 질문이 대부분이었는데 아무도 아는 콘텐츠가 없어서 김영진 대표 중간에 그만하겠다고 함.","followup":null},{"no":null,"date":"2026-03-12 00:00","time":"점심","media":"뉴스포스트","attendees":"선초롱 부장, 허서우 기자","person":"팀","notes":"선초롱 부장=10년차 85년생. 뉴스포스트로 입사했다가 일 쉬다가 작년 8월에 복귀. 6월에 창간 20주년이라 협찬 요청","followup":null},{"no":null,"date":"2026-03-13 00:00","time":null,"media":"뉴스핌","attendees":"이성화 기자","person":"이성웅","notes":"4월 출산 휴가 예정","followup":null},{"no":null,"date":"2026-03-13 00:00","time":null,"media":"디지털데일리","attendees":"유채리 기자(티)","person":"이성웅","notes":null,"followup":null},{"no":null,"date":"2026-03-17 00:00","time":"점심","media":"녹색경제신문","attendees":"조아라 기자","person":"권이윤","notes":"기존 담당 서영광 기자는 식음료, 채널 주력, 조기자가 뷰티/패션 1진 담당, 정치부 인턴 경험, 이전에는 IT+산업 출입, 91년생, 4년차, 신방과 전공, 상암 거주, 20대에 화장품 좋아하고 관심도 높았음, 관련 커뮤니티 등 모니터링 해 취재","followup":null},{"no":null,"date":"2026-03-16 00:00","time":"티타임","media":"스킨푸드","attendees":"만우절 콘텐츠 기획 미팅(안세진 팀장 동행)","person":"이남정","notes":null,"followup":null},{"no":null,"date":"2026-03-17 00:00","time":null,"media":"뷰어스","attendees":"내미림 기자","person":"이성웅","notes":"매일일보 다니다가 개인 사업 위해 퇴사. 코로나 때 골프용품 사업 시작했다가 사업 커지면서 매각하고 휴식하다가 뷰어스로 복귀. 아이뉴스 박은경, 데일리안 임유정과 친분","followup":null},{"no":null,"date":"2026-03-17 00:00","time":"점심","media":"아이뉴스24","attendees":"박은경 기자","person":"팀","notes":"최근 뷰티 트렌드 공유, 아이뉴스24는 인원이 많아 4월 네이버 개편 이후에도 보도자료 기사는 줄이지 않고 지금과 동일하게 운영할 예정, 4/1 만우절 SNS 캠페인 기획 자료 PR 협의","followup":null},{"no":null,"date":"2026-03-18 00:00","time":"점심","media":"한겨레","attendees":"정인선 기자","person":"권이윤","notes":"20일 한겨례 인사 변동 예정, 경제산업부장인 노현웅 부장 인품이 좋아서 관련 부서 지원자가 많다고 함.","followup":null},{"no":null,"date":"2026-03-20 00:00","time":"점심","media":"톱데일리","attendees":"류세나 부장, 박성민 차장","person":"팀","notes":"실장님과 저녁 미팅 어레인지 요청","followup":null},{"no":null,"date":"2026-03-24 00:00","time":"점심","media":"포인트데일리","attendees":"최영운 국장, 함영원 기자","person":"권이윤","notes":"8/24 저녁 미팅 요청","followup":null},{"no":null,"date":"2026-03-25 00:00","time":"점심","media":"네이버","attendees":"뉴스편집팀","person":"임영롱","notes":"네이버 검색제휴사 리스트 확인 (추후 추가 업데이트 예정), 보도자료 기반 작성기사는 현재와 동일하게 운영될 것으로 보임","followup":null},{"no":null,"date":"2026-03-24 00:00","time":null,"media":"포인트데일리","attendees":"최영운 국장","person":"팀","notes":"임영롱, 권이윤","followup":null},{"no":null,"date":"2026-03-27 00:00","time":null,"media":"스마트에프엔","attendees":"팀 점심","person":"팀","notes":null,"followup":null},{"no":null,"date":"2026-03-26 00:00","time":null,"media":"포츈코리아","attendees":"팀 점심","person":"팀","notes":"이성웅, 권이윤","followup":null},{"no":null,"date":"2026-03-30 00:00","time":null,"media":"톱데일리","attendees":"구예림 기자","person":"권이윤","notes":null,"followup":null},{"no":null,"date":"2026-03-24 00:00","time":null,"media":"더벨","attendees":"팀 저녁","person":"팀","notes":null,"followup":null},{"no":null,"date":"2026-03-30 00:00","time":null,"media":"조선비즈","attendees":"정재훤 기자","person":"이성웅","notes":null,"followup":null},{"no":null,"date":"2026-03-23 00:00","time":null,"media":"머니투데이","attendees":"팀 점심","person":"팀","notes":null,"followup":null},{"no":null,"date":"2026-03-24 00:00","time":null,"media":"비즈트리뷴","attendees":"김다정 기자","person":"이성웅","notes":null,"followup":null},{"no":null,"date":"2026-03-31 00:00","time":null,"media":"파이낸셜 뉴스","attendees":"최갑천 부장 티미팅","person":"임영롱","notes":null,"followup":null},{"no":null,"date":"2026-03-31 00:00","time":null,"media":"전자신문","attendees":"문보경 부장 티미팅","person":"임영롱","notes":null,"followup":null}],"pr_list":[{"no":"001","month":"1월","type":"기업(취재)","date":"2026-01-02 00:00","content":"최대' 매출 앞둔 코스맥스…ODM·신사업 나눠 맡은 형제 경영 출범","media":"뉴스포스트","link":"https://www.newspost.kr/news/articleView.html?idxno=219963"},{"no":"002","month":"1월","type":"기업(취재)","date":"2026-01-02 00:00","content":"[세계가 찾는 K]② '관리의 미학'이 통한다… K뷰티, 세계 화장품 시장 주류로","media":"조선비즈","link":"https://biz.chosun.com/distribution/channel/2026/01/02/MYRIKTUTVJGSJKAHDTB476QOEI/?utm_source=naver&utm_medium=original&utm_campaign=biz"},{"no":"003","month":"1월","type":"기업(취재)","date":"2026-01-02 00:00","content":"코스맥스, 中 PCT 콘퍼런스서 '바이오 혁신 플랫폼' 공개…K-뷰티 기술력 입증","media":"더구루","link":"https://www.theguru.co.kr/news/article.html?no=96336"},{"no":"004","month":"1월","type":"기업(공시)","date":"2026-01-03 00:00","content":"K뷰티 코스맥스, 판교에 사옥용 건물 1175억에 취득...일부 임대 운영 활용 계획","media":"이코노뉴스","link":"https://www.econonews.co.kr/news/articleView.html?idxno=421455"},{"no":"005","month":"1월","type":"기업(취재)","date":"2026-01-03 00:00","content":"How K-beauty went from a viral trend to an economic powerhouse","media":"BBC","link":"https://www.bbc.com/news/articles/cj9y43mv332o"},{"no":"006","month":"1월","type":"기업(취재)","date":"2026-01-04 00:00","content":"K뷰티 제조사, 공장증설·해외투자 확대…\"글로벌 영토확장\"","media":"연합뉴스","link":"https://www.yna.co.kr/view/AKR20260103027700030?input=1195m"},{"no":"007","month":"1월","type":"기업(취재)","date":"2026-01-04 00:00","content":"달팽이 세럼부터 10단계 스킨케어 루틴까지…세계 사로잡은 K뷰티에 외신 주목","media":"세계일보","link":"https://www.segye.com/newsView/20260104509077?OutUrl=naver"},{"no":"008","month":"1월","type":"화장품(공시)","date":"2026-01-05 00:00","content":"코스맥스, '색상 안 묻고도 광택감 구현' 화장품 특허 취득…\"향후 생산에 사용\"","media":"뉴시스","link":"https://www.newsis.com/view/NISX20260105_0003465620"},{"no":"009","month":"1월","type":"기업(자료)","date":"2026-01-06 00:00","content":"[신년사] 코스맥스그룹 \"고객 가치에 프리미엄 더해 K-뷰티 고급화 선도\"","media":null,"link":"https://www.news1.kr/industry/distribution/6029504"},{"no":"010","month":"1월","type":"기업(취재)","date":"2026-01-06 00:00","content":"코스맥스·콜마…K뷰티 '오너2세 부회장들', 승계 넘어 체질 개선","media":"뉴시스","link":"https://www.newsis.com/view/NISX20260105_0003465812"},{"no":"011","month":"1월","type":"기업(취재)","date":"2026-01-06 00:00","content":"中특수 다시 누리나...들썩이는 'K뷰티'","media":"이데일리","link":"https://www.edaily.co.kr/News/Read?newsId=04018006645315096&mediaCodeNo=257&OutLnkChk=Y"},{"no":"012","month":"1월","type":"화장품(취재)","date":"2026-01-07 00:00","content":"현대판 백설공주'? AI 거울로 피부 진단…CES에서 빛난 K뷰티","media":"중앙일보","link":"https://www.joongang.co.kr/article/25395849"},{"no":"013","month":"1월","type":"기업(취재)","date":"2026-01-07 00:00","content":"코스맥스, '가성비 ODM' 넘어 프리미엄으로 간다","media":"더벨","link":"https://www.thebell.co.kr/front/newsview.asp?click=F&key=202601071109572160102274"},{"no":"014","month":"1월","type":"고객사(자료)","date":"2026-01-08 00:00","content":"앳홈, 코스맥스와 '글로벌 타깃' 뷰티 신제품 개발한다","media":null,"link":"https://www.news1.kr/industry/fashion/6032263"},{"no":"015","month":"1월","type":"기업(취재)","date":"2026-01-08 00:00","content":"\"한중관계 훈풍 부나\"…K-뷰티 ODM, '중국 맞춤형' 전략 가동","media":"미디어펜","link":"https://www.mediapen.com/news/view/1072656"},{"no":"016","month":"1월","type":"화장품(공시)","date":"2026-01-08 00:00","content":"코스맥스, 화장품 발림성 예측 관련 특허권 취득","media":"블로터","link":"https://www.bloter.net/news/articleView.html?idxno=651263"},{"no":"017","month":"1월","type":"기업(취재)","date":"2026-01-09 00:00","content":"코스맥스, 2026년 '두 자릿수 성장' 시동…목표주가 25만원 유지","media":"메가경제","link":"https://www.megaeconomy.co.kr/news/newsview.php?ncode=1065594776490561"},{"no":"018","month":"1월","type":"화장품(자료)","date":"2026-01-13 00:00","content":"코스맥스-POSTECH, 화장품 효능성분 방출속도 제어기술 개발","media":null,"link":"https://www.news1.kr/industry/distribution/6036703"},{"no":"019","month":"1월","type":"화장품(기획)","date":"2026-01-14 00:00","content":"AI가 파우더 색 조합… 1초에 화장품 10.2개 생산","media":"조선일보","link":"https://www.chosun.com/economy/market_trend/2026/01/14/ND6IZJZF3BDH5O2PVQA5O2VOXA/?utm_source=naver&utm_medium=referral&utm_campaign=naver-news"},{"no":"020","month":"1월","type":"화장품(취재)","date":"2026-01-15 00:00","content":"‘K뷰티 공장장’ 코스맥스 vs 한국콜마...양사 모두 ‘기술력 기반 글로벌 확장’ 사활","media":"이투데이","link":"https://www.etoday.co.kr/news/view/2545617"},{"no":"021","month":"1월","type":"건기식(자료)","date":"2026-01-16 00:00","content":"코스맥스바이오, 9시간 지속성 제형 '타임핏 비타' 개발","media":null,"link":"https://www.ebn.co.kr/news/articleView.html?idxno=1695448"},{"no":"022","month":"1월","type":"기업(취재)","date":"2026-01-16 00:00","content":"코스맥스, 유형자산 확대 잰걸음…중장기 성장 발판","media":"딜사이트","link":"https://dealsite.co.kr/articles/155080"},{"no":"023","month":"1월","type":"화장품(기획)","date":"2026-01-16 00:00","content":"“사용감·성능 모두 잡은 차세대 맞춤형 '선 스크린'\"","media":"뷰티경제","link":"https://www.thebk.co.kr/news/articleView.html?idxno=306430"},{"no":"024","month":"1월","type":"화장품(취재)","date":"2026-01-18 00:00","content":"\"한국인 머릿결 닮고 싶어요\"…피부 이어서 헤어까지 점령한 '진격의 K뷰티'","media":"아시아경제","link":"https://www.asiae.co.kr/article/2026011616001266521"},{"no":"025","month":"1월","type":"화장품(기획)","date":"2026-01-20 00:00","content":"코스맥스 ODM 시스템, 화려한 K뷰티 뒤편의 힘","media":"오늘경제","link":"https://www.startuptoday.co.kr/news/articleView.html?idxno=574185"},{"no":"026","month":"1월","type":"화장품(자료)","date":"2026-01-20 00:00","content":"코스맥스, '맞춤형 컬러 설루션'으로 日 베이스 메이크업 시장 공략","media":null,"link":"https://www.news1.kr/industry/distribution/6044175"},{"no":"027","month":"1월","type":"기업(취재)","date":"2026-01-20 00:00","content":"젊어진' 中企 리더십 … 오너 2·3세 미래 사업 전면에","media":"매일경제","link":"https://www.mk.co.kr/news/business/11937999"},{"no":"028","month":"1월","type":"화장품(기획)","date":"2026-01-22 00:00","content":"\"K뷰티 따라잡는 J뷰티, 잘못하면 성장세 꺾여\"","media":"아시아경제","link":"https://www.asiae.co.kr/article/2026010620482987601"},{"no":"029","month":"1월","type":"화장품(자료)","date":"2026-01-22 00:00","content":"코스맥스, 서울대·日 도쿄대와 차세대 '스마트 전달체' 개발","media":null,"link":"https://www.newsis.com/view/NISX20260122_0003485895"},{"no":"030","month":"1월","type":"화장품(취재)","date":"2026-01-22 00:00","content":"K-ODM 다음 승부수는 '원료'···글로벌 성장 가속","media":"서울파이낸스","link":"https://www.seoulfn.com/news/articleView.html?idxno=619031"},{"no":"031","month":"1월","type":"화장품(취재)","date":"2026-01-22 00:00","content":"뷰티기기 시장 판 커지자…매력 발산하는 K브랜드","media":"서울경제","link":"https://www.sedaily.com/article/14174426"},{"no":"032","month":"1월","type":"기업(기획)","date":"2026-01-23 00:00","content":"코스맥스, 서울대에 62억 투자해 1358억 매출 결실","media":"조선일보","link":"https://www.chosun.com/economy/2026/01/23/OSDDTHB3FFDQFPEDXSGTNUWXAI/?utm_source=naver&utm_medium=referral&utm_campaign=naver-news"},{"no":"033","month":"1월","type":"기업(취재)","date":"2026-01-23 00:00","content":"‘톱티어’ 기업 조건 갖춘 코스맥스... 글로벌 ODM 기준 제시","media":"프레스맨","link":"https://www.pressman.kr/news/articleView.html?idxno=98897"},{"no":"034","month":"1월","type":"기업(취재)","date":"2026-01-26 00:00","content":"K뷰티 다음 타깃은 헤어…화장품 제조사도 뛰어든다","media":"서울경제","link":"https://www.sedaily.com/article/20000820?ref=naver"},{"no":"035","month":"1월","type":"기업(취재)","date":"2026-01-27 00:00","content":"코스맥스, ‘프리미엄 밸류에이션’이 정당한 이유","media":"프레스맨","link":"https://www.pressman.kr/news/articleView.html?idxno=99058"},{"no":"036","month":"1월","type":"기업(기획)","date":"2026-01-27 00:00","content":"코스맥스, R&I로 초격차 역량 확보… K뷰티 고급화 앞장","media":"파이낸셜뉴스","link":"https://www.fnnews.com/news/202601271828208077"},{"no":"037","month":"1월","type":"기업(자료)","date":"2026-01-29 00:00","content":"코스맥스, 美 타임지 선정 '2026 세계 최고 지속가능 성장기업' 등극","media":null,"link":"https://www.news1.kr/industry/distribution/6054667"},{"no":"038","month":"1월","type":"기업(기획)","date":"2026-01-29 00:00","content":"코스맥스, 초격차 R&I, 글로벌 확장으로 K뷰티 프리미엄화 선도","media":"1코노미뉴스","link":"https://www.1conomynews.co.kr/news/articleView.html?idxno=46633"},{"no":"039","month":"1월","type":"기업(기획)","date":"2026-01-29 00:00","content":"코스맥스, AI 전환으로 ODM 패러다임 바꿔…'프리미엄 K뷰티' 이끈다","media":"뉴시스","link":"https://www.newsis.com/view/NISX20260129_0003495409"},{"no":"040","month":"1월","type":"기업(기획)","date":"2026-01-30 00:00","content":"코스맥스, '판교 시대' 열고 초고속 성장…글로벌 K-뷰티 선봉장","media":"딜사이트","link":"https://dealsite.co.kr/articles/156078"},{"no":"041","month":"2월","type":"기업(취재)","date":"2026-02-05 00:00","content":"CJ올리브영 '고공행진'에 웃는 ODM사···제2 '로드샵 시대' 열까","media":"현대경제신문","link":"https://www.finomy.com/news/articleView.html?idxno=249185"},{"no":"042","month":"2월","type":"기업(취재)","date":"2026-02-06 00:00","content":"뷰티ODM, K컬쳐 인기에 최대 실적 '청신호'","media":"이데일리","link":"https://www.edaily.co.kr/News/Read?newsId=01813846645347896&mediaCodeNo=257&OutLnkChk=Y"},{"no":"043","month":"2월","type":"화장품(기획)","date":"2026-02-06 00:00","content":"로봇이 조립, AI가 색 검수한다…K뷰티의 힘은 '첨단 제조력'","media":"한국경제","link":"https://www.hankyung.com/article/2026020697111"},{"no":"044","month":"2월","type":"화장품(자료)","date":"2026-02-11 00:00","content":"코스맥스, 차세대 자외선 차단 평가법 도입…유럽 선케어 시장 공략","media":null,"link":"https://www.news1.kr/industry/distribution/6069607"},{"no":"045","month":"2월","type":"건기식(자료)","date":"2026-02-13 00:00","content":"코스맥스바이오, 체지방 줄이고 근육 지키는 '테올림' 개발","media":null,"link":"https://www.news1.kr/industry/distribution/6072687"},{"no":"046","month":"2월","type":"기업(취재)","date":"2026-02-18 00:00","content":"K제조업은 어떻게 세계 명품의 '셰프'가 되었나","media":"조선일보","link":"https://www.chosun.com/opinion/economic_focus/2026/02/18/42CEO5FOWVF3ZFMBTJU5RGQBHA/?utm_source=naver&utm_medium=referral&utm_campaign=naver-news"},{"no":"047","month":"2월","type":"화장품(기획)","date":"2026-02-19 00:00","content":"코스맥스 5대 생산품목으로 본 뷰티 트렌드","media":"뷰티경제","link":"https://www.thebk.co.kr/news/articleView.html?idxno=307497"},{"no":"048","month":"2월","type":"기업(취재)","date":"2026-02-19 00:00","content":"업계 주름잡는 기업엔 ‘영업맨 DNA’ 흐른다…코스맥스부터 광동제약까지","media":"헤럴드경제","link":"https://biz.heraldcorp.com/article/10678785?ref=naver"},{"no":"049","month":"2월","type":"화장품(기획)","date":"2026-02-22 00:00","content":"K뷰티' 진화, 이제는 디바이스…2030년 45조 세계 시장 겨냥","media":"연합뉴스","link":"https://www.yna.co.kr/view/AKR20260221047100030?input=1195m"},{"no":"050","month":"2월","type":"화장품(기획)","date":"2026-02-23 00:00","content":"코스맥스 AI 시스템","media":"약업신문","link":"https://www.yakup.com/news/index.html?mode=view&cat=12&nid=323510"},{"no":"051","month":"2월","type":"화장품(자료)","date":"2026-02-23 00:00","content":"코스맥스, 伊 ODM社 인수…유럽 공략 속도","media":null,"link":"https://www.hankyung.com/article/2026022391721"},{"no":"052","month":"2월","type":"기업(자료)","date":"2026-02-23 00:00","content":"코스맥스, 작년 영업이익 1958억 ‘역대 최대’...“韓·中 법인 성장”","media":null,"link":"https://www.sedaily.com/article/20011538?ref=naver"},{"no":"053","month":"2월","type":"화장품(취재)","date":"2026-02-23 00:00","content":"\"화장품 기획 30초면 끝\"...‘딥테크’로 진화하는 뷰티 ODM","media":"우먼타임즈","link":"https://www.womentimes.co.kr/news/articleView.html?idxno=100657"},{"no":"054","month":"2월","type":"기업(취재)","date":"2026-02-24 00:00","content":"‘K뷰티 히든챔피언’ 코스맥스, 이병만 부회장 글로벌 전략 본격화","media":"인사이트코리아","link":"https://www.insightkorea.co.kr/news/articleView.html?idxno=241680"},{"no":"055","month":"2월","type":"기업(취재)","date":"2026-02-24 00:00","content":"C뷰티' 베팅한 코스맥스, 중국 턴어라운드 가시화","media":"더벨","link":"https://www.thebell.co.kr/front/newsview.asp?click=F&key=202602241416573600102913"},{"no":"056","month":"2월","type":"기업(취재)","date":"2026-02-25 00:00","content":"伊 ODM 인수' 코스맥스, 유럽 공략 기대 효과는","media":"더벨","link":"https://www.thebell.co.kr/front/newsview.asp?click=F&key=202602251256040040106729"},{"no":"057","month":"2월","type":"기업(취재)","date":"2026-02-25 00:00","content":"‘실적 신기록 행진’ 코스맥스, 글로벌 확장 ‘착착’","media":"한국금융신문","link":"https://www.fntimes.com/html/view.php?ud=202602250801499090923defd0cc_18"}],"sns_plan":[{"category":"정기 기획","sub":"임직원","item":"뷰티회사 관찰일기","behind":"O","partnership":null,"trend":"O","creative":null,"mar":"1.0","apr":null,"may":"1.0","jun":null,"total":"2"},{"category":null,"sub":null,"item":"Who are you","behind":"O","partnership":null,"trend":"O","creative":null,"mar":"1.0","apr":"1.0","may":null,"jun":"1.0","total":"3"},{"category":null,"sub":null,"item":"파우치 ASMR","behind":"O","partnership":null,"trend":"O","creative":null,"mar":"1.0","apr":"1.0","may":"1.0","jun":"1.0","total":"4"},{"category":null,"sub":"고객사","item":"신제품","behind":null,"partnership":"O","trend":"O","creative":null,"mar":"2.0","apr":"2.0","may":"2.0","jun":"2.0","total":"8"},{"category":null,"sub":null,"item":"팝업/스토어","behind":null,"partnership":"O","trend":"O","creative":null,"mar":"1.0","apr":"1.0","may":"1.0","jun":"1.0","total":"4"},{"category":null,"sub":"인플루언서","item":"섭외","behind":null,"partnership":null,"trend":"O","creative":"O","mar":"1.0","apr":"1.0","may":"1.0","jun":"1.0","total":"4"},{"category":null,"sub":null,"item":"TBD","behind":null,"partnership":null,"trend":null,"creative":null,"mar":null,"apr":null,"may":"4.0","jun":"4.0","total":"8"},{"category":"시즌 기획","sub":"고객사 X 인플루언서","item":"네오베아","behind":"O","partnership":"O","trend":"O","creative":"O","mar":"2.0","apr":"2.0","may":"2.0","jun":"2.0","total":"8"},{"category":null,"sub":null,"item":null,"behind":null,"partnership":null,"trend":null,"creative":null,"mar":"9","apr":"8","may":"12","jun":"12","total":null},{"category":"신규 기획","sub":"틱톡 공식 계정 개설","item":null,"behind":null,"partnership":null,"trend":null,"creative":null,"mar":null,"apr":null,"may":null,"jun":null,"total":null},{"category":null,"sub":"유튜브 쇼츠 채널 운영","item":null,"behind":null,"partnership":null,"trend":null,"creative":null,"mar":null,"apr":null,"may":null,"jun":null,"total":null},{"category":null,"sub":"캠퍼스 크리에이터","item":null,"behind":null,"partnership":null,"trend":null,"creative":null,"mar":null,"apr":null,"may":null,"jun":null,"total":null}],"articles":["마이크로바이옴 우월 지위 포커스 (히스토리 + 최신 행보)","국가대표 제조사 (수출 25% 기여)","홈페이지 어워즈","코스맥스/콜마/인터코스 실적 비교 자료 (매체별 헤드 변경 지속 릴리즈)","+","4/24 패키징데이","글로벌 연구소"],"yourlogo":{"products":["리프레싱3종(남성용)","바이탈라이징3종(여성용)","자생","얼티밋벨벳쿠션","센트리티지 2종","선크림"],"stock":["8.0","15.0","14.0","40.0","7.0","77.0"],"usage":[{"type":"반출","date":"2026-03-12 00:00","p1":"1.0","p2":"1.0","p3":null,"p4":null,"p5":null,"p6":"2.0","note":"뉴스포스트 미팅 (2명)"},{"type":"반출","date":"2026-03-13 00:00","p1":null,"p2":"1.0","p3":null,"p4":"1.0","p5":null,"p6":"1.0","note":"뉴스핌 미팅(1명)"},{"type":"반출","date":"2026-03-17 00:00","p1":null,"p2":"1.0","p3":null,"p4":"1.0","p5":null,"p6":"1.0","note":"뷰어스 미팅(1명)"},{"type":"반출","date":"2026-03-17 00:00","p1":null,"p2":null,"p3":null,"p4":null,"p5":null,"p6":"1.0","note":"녹색경제신문 미팅(1명)"},{"type":"반출","date":"2026-03-17 00:00","p1":"1.0","p2":"1.0","p3":null,"p4":"1.0","p5":null,"p6":"1.0","note":"아이뉴스 미팅(1명)"},{"type":"반출","date":"2026-03-18 00:00","p1":"4.0","p2":"4.0","p3":null,"p4":"4.0","p5":null,"p6":"4.0","note":"조선일보 회장님 미팅(4명)"},{"type":"반출","date":"2026-03-18 00:00","p1":null,"p2":null,"p3":null,"p4":null,"p5":null,"p6":"1.0","note":"한겨레 미팅(1명)"},{"type":"반출","date":"2026-03-20 00:00","p1":"2.0","p2":"1.0","p3":null,"p4":"3.0","p5":null,"p6":"3.0","note":"톱데일리 미팅(3명)"},{"type":"반출","date":"2026-03-23 00:00","p1":"1.0","p2":null,"p3":null,"p4":null,"p5":null,"p6":"1.0","note":"뉴시스 미팅 (1명)"},{"type":"반출","date":"2026-03-24 00:00","p1":"1.0","p2":"2.0","p3":null,"p4":"2.0","p5":null,"p6":"2.0","note":"포인트데일리 미팅(2명)"},{"type":"반출","date":"2026-03-24 00:00","p1":null,"p2":null,"p3":"2.0","p4":"2.0","p5":null,"p6":"2.0","note":"뉴데일리 미팅(2명)"},{"type":"반출","date":"2026-03-24 00:00","p1":null,"p2":null,"p3":"4.0","p4":"4.0","p5":null,"p6":"4.0","note":"더벨 미팅(4명)"},{"type":"반출","date":"2026-03-24 00:00","p1":"2.0","p2":null,"p3":null,"p4":null,"p5":null,"p6":null,"note":"크리에이터(홀리덕) 미팅(2명)"},{"type":"반출","date":"2026-03-25 00:00","p1":"1.0","p2":"1.0","p3":null,"p4":"1.0","p5":null,"p6":"1.0","note":"네이버 미팅 (1명)"},{"type":"반출","date":"2026-03-23 00:00","p1":null,"p2":"1.0","p3":null,"p4":"1.0","p5":null,"p6":"1.0","note":"비즈트리뷴 미팅(1명)"},{"type":"반출","date":"2026-03-26 00:00","p1":null,"p2":null,"p3":null,"p4":null,"p5":"2.0","p6":null,"note":"포춘코리아 미팅(2명)"},{"type":"반출","date":"2026-03-27 00:00","p1":"1.0","p2":"1.0","p3":null,"p4":"1.0","p5":null,"p6":"1.0","note":"딜사이트(1명)"},{"type":"반출","date":"2026-03-27 00:00","p1":"2.0","p2":"2.0","p3":null,"p4":"2.0","p5":null,"p6":"2.0","note":"NBT TV(2명)"},{"type":"반출","date":"2026-03-27 00:00","p1":"1.0","p2":"1.0","p3":null,"p4":"2.0","p5":null,"p6":"2.0","note":"스마트에프엔(2명)"},{"type":"반출","date":"2026-03-27 00:00","p1":null,"p2":null,"p3":null,"p4":null,"p5":"1.0","p6":null,"note":"아시아경제(1명)"},{"type":"반출","date":"2026-03-31 00:00","p1":"3.0","p2":"3.0","p3":null,"p4":"3.0","p5":null,"p6":"3.0","note":"실장님 외부 미팅(3명)"}]},"schedule_events":[{"month":"3월","day":"4","content":"[SNS] 네오베아 x 코스맥스 티저","dayOfWeek":3},{"month":"3월","day":"7","content":"[SNS] 텐스 플래그십 스토어","dayOfWeek":6},{"month":"3월","day":"10","content":"[PR] 국가연구혁신청(BRIN) MOU","dayOfWeek":2},{"month":"3월","day":"10","content":"[SNS] 직원 소개_GCC 박근모","dayOfWeek":2},{"month":"3월","day":"11","content":"[PR] CDP+에코바디스","dayOfWeek":3},{"month":"3월","day":"12","content":"[SNS] 쥬베룩 신상 홍보","dayOfWeek":4},{"month":"3월","day":"17","content":"[SNS] 와츠인마이파우치_고나윤","dayOfWeek":2},{"month":"3월","day":"18","content":"[PR] 바이오 크런치탭","dayOfWeek":3},{"month":"3월","day":"20","content":"[PR] 식약처 코스맥스 방문","dayOfWeek":5},{"month":"3월","day":"23","content":"[PR] 펫 유산균 시장 공략","dayOfWeek":1},{"month":"3월","day":"25","content":"[PR] 상반기 공채 모집","dayOfWeek":3},{"month":"3월","day":"25","content":"[SNS] 무지개맨션X뽀용뇽 신상 홍보","dayOfWeek":3},{"month":"3월","day":"28","content":"[SNS] 홀리덕x극지연구소 협업","dayOfWeek":6},{"month":"3월","day":"30","content":"[PR] 2026 볼로냐 박람회","dayOfWeek":1},{"month":"4월","day":"1","content":"[SNS] 만우절 콘텐츠","dayOfWeek":3},{"month":"4월","day":"1","content":"[PR] 만우절","dayOfWeek":3},{"month":"4월","day":"2","content":"[PR] AI 교육 강화","dayOfWeek":4},{"month":"4월","day":"3","content":"[SNS] 네오베아 x 코스맥스 ep.1","dayOfWeek":5},{"month":"4월","day":"6","content":"[PR] 중국법인 글로벌 거점 기업 선정","dayOfWeek":1},{"month":"4월","day":"7","content":"[SNS] 뷰티회사관찰일기_JB랩","dayOfWeek":2},{"month":"4월","day":"9","content":"[SNS] 페리페라 신상 홍보","dayOfWeek":4},{"month":"4월","day":"14","content":"[SNS] 와츠인마이파우치_의균님","dayOfWeek":2},{"month":"4월","day":"16","content":"[SNS] 직원소개_PW랩 윤예화","dayOfWeek":4},{"month":"4월","day":"21","content":"[SNS] 네오베아x코스맥스 ep.2","dayOfWeek":2},{"month":"4월","day":"23","content":"[SNS] 팝업_본스탠드아웃","dayOfWeek":4}],"schedule_legend":{"0":"[PR] 완료","1":"[PR] 예정","2":"[SNS] 완료","3":"[SNS] 예정"},"clipping":[{"date":"2026-04-01","keyword":"코스맥스","media":"디지털투데이","title":"코스맥스 주주 국민연금공단, 코스맥스 주식등의 수 12만4883주 감소…총 지분율 10.81% - 디지털투데이","link":"https://news.google.com/rss/articles/CBMic0FVX3lxTFBFc21iM0Fwc2pkWFZKZU94VGR5bDBJTjkxano0Wk5GeHd0Mm5wYVFIQUpwR0R0a0RHTlhpVlJjQk5iay1jWG9Hbm1Tb2tYbGdxRXhacGFCbDR6aHpDclNzWXMtejlrX2YzT0lFLW1tTEZocTQ?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"아이뉴스24","title":"감다살' 코스맥스의 M2C 마케팅…\"스킨푸드 터졌다\" - 아이뉴스24","link":"https://news.google.com/rss/articles/CBMiTEFVX3lxTE1kNktpU0pVUWZLaG9Qa0poUFJrempWX2xINV9ITDRpUm1XdVE4b1FPY3lPUkVTZzBMdXJ2RTh2bmplSHNQaHlJVGxZd20?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"조세일보","title":"코스맥스, 백탁현상 개선 자외선 차단 기술 특허권 취득 [공시pick] - 조세일보","link":"https://news.google.com/rss/articles/CBMidEFVX3lxTE54QlM2SXlzREJxQURpZ0RzVlp5ZVpWN2JnUDlFTUF5QVFKaG1oWUt3UU1vWk1SN2tTMWxlVXQ2WGk4TThBN3oydXdRWFdPM2h0U1F2ZS1WaVBjTEptYnZuX05pQ2p5SjVuWDV0ZUpiWm1NR0JV?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"데이터투자","title":"코스맥스, 자외선 차단 효과 높인 캡슐 화장료 특허…신제품 적용 예정 - 데이터투자","link":"https://news.google.com/rss/articles/CBMic0FVX3lxTFBmZGdmbFBMc09aUUxSQVV2ZkdFOXJrNVVqb0YzaEdKWXRaWXcydy1sbTYzdEZQSTFHV0ZmeVl3MVRDbzNzZk00NnpHdXd2aXFmMEJkWWNCUENlNU5nRjhmRlBjdEFUUl83cDVoZTZhODVUSFU?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"biz.chosun.com","title":"코스맥스엔비티, +10.98% VI 발동 - 조선비즈 - biz.chosun.com","link":"https://news.google.com/rss/articles/CBMigwFBVV95cUxNcEtiV1ZXQkt1cUVXN2llLW9TNGJtV0lFdzNISU93eGxHRjd2Zl8yUTNHRVBtU2xETk95TmJlbG9IaTFodlF0YkFSNFdTUzNlR3ItbXptaHdyc2VfWW5nZ0FHbDJCR0lqLVVzOVBpemVWZ1ByWlJsQmJCdm8zX1pzcVFHZ9IBlwFBVV95cUxNS0pEVUR6clFJTDA1SktpM3hMbkJFYzMtbTVISXNKV2c1QjBsZXpGVlplTkVFX1dQcTcwcUgwbmZEdG1vZlVTd0hkT0YyTDFBM00wVjBwNzFKeTBvTW1sakk2alNQSkg4dnVmbUVXYktNN3dKR1lPMFptbWJJeWtKbXFoMmxIUWl5Y2pEWlpaOGI2anBibWJR?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"알파경제","title":"코스맥스, 견조한 외형 성장에도 믹스 영향으로 수익성 둔화 - 알파경제","link":"https://news.google.com/rss/articles/CBMibkFVX3lxTE1yZmFGQXFCbFBDRXZubFVhSGM0YnVDU2s0dTVPR29Ya3k3N2t1aVYxX0FhWkR1T3NxR20yVDh1c0dHSFRJVDA1VXptNEJNTmRJT2p3U2o3bFdTX1lyZ05fQlFXeFBSQU1wUEg1TVp30gFuQVVfeXFMTXJmYUZBcUJsUENFdm5sVWFIYzRidUNTazR1NU9Hb1hreTc3a3VpVjFfQWFaRHVPc3FHbTJUOHVzR0dIVElUMDVVem00Qk1OZElPandTajdsV1NfWXJnTl9CUVd4UFJBTXBQSDVNWnc?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"아시아경제","title":"[클릭 e종목]\"코스맥스, 제품 믹스 변화로 단기 수익성 둔화\" - 아시아경제","link":"https://news.google.com/rss/articles/CBMiYkFVX3lxTFA0QVdOTVo2MndicWhlR0tRTXA3dHFCUGM4dFBfOWtXTzRDOUc3UHNfMmVTMnVhelY3bE5fMUlKQ013YjRRN3I2RmZ2cEhzamhqQnFlRTdyWVR4N04yOTAyakhn?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"논객닷컴","title":"한국콜마, 해외전선에서 비상.....중국 미국 캐나다 모두 매출 줄고 수익성 악화 - 논객닷컴","link":"https://news.google.com/rss/articles/CBMia0FVX3lxTE11MEk2bFhiVVNVTEpuSUVESEV5TldlQWJaRU9JZEJWSVJBWXRMc2JvVFdVd3doZDQtWFFlb0hWU1RvMkJkMmNjN0RFNFAzb3Nkb3RuMWxzcVR1Qk1SN0xycURFd25xVVpqYmtJ0gFrQVVfeXFMTXUwSTZsWGJVU1VMSm5JRURIRXlOV2VBYlpFT0lkQlZJUkFZdExzYm9UV1V3d2hkNC1YUWVvSFZTVG8yQmQyY2M3REU0UDNvc2RvdG4xbHNxVHVCTVI3THJxREV3bnFVWmpia0k?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"중앙이코노미뉴스","title":"코스맥스 주가, 4월 1일 200,000원 1.78% 상승 마감 - 중앙이코노미뉴스","link":"https://news.google.com/rss/articles/CBMickFVX3lxTE42X1BucFRmN3NSNjRLMGhHZ1hlc2dPN3M4XzhCNnZzTk1lYU5MMktFVTR3SGRMMWpwWmM3SE5oeFlWa2VqNDh4WnIwVjlrSGtaa1gtSTNUOHlKS2N6azdHT3hic2RXbFJkQTk3WlEzMll0dw?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"yakup.com","title":"코스맥스바이오, 바삭한 식감 살린 신제형 '크런치탭' 개발 - yakup.com","link":"https://news.google.com/rss/articles/CBMi_AFBVV95cUxPc0RMN1lUemFNNTNQVDJwX0lVSTZMYkotQ2U2YjN2Y3VlT1p1OUhpUEhOX19mRW9NMm80alZZUUtvWUF2ekE2dFdmTVhvMzRKZ19nV3JWdU4yVzd0OEZLS3NtZkdZVzNpQVh2NGdZaGk5UFY1N2pKajgwZEszR21RZDlUZmd2SVJiVTZhZ0VESkdYSjdtbTZCNmNEcnd0b1E1eXpwTzY2XzZCbDJjT2RneEpUbnFVOFVFSXk1VnBacEZiVzVqSWpTeEFrOHR5SmtXMXNqOF9Rb3R5LXBCTzBnNG9QU3EtblBGa0xYQWZvQzlGWjVyQWtrRDg5Nlk?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"네이트","title":"코스맥스, 백탁현상 개선 자외선 차단 기술 특허권 취득 [공시pick] - 네이트","link":"https://news.google.com/rss/articles/CBMiU0FVX3lxTE1sZ0xvTy1vMUMwYnBzaURkLWFxdk9MSFd4QVdGcHdwckwwM2F6RHh4M2pWeXlCb1RYcXVGanR4dnFVcG5GSEEyV3ktSWlsZmdKS2RR?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"데이터투자","title":"코스맥스, '백탁 없는 자외선 차단제' 특허 확보로 제품 경쟁력 강화 - 데이터투자","link":"https://news.google.com/rss/articles/CBMic0FVX3lxTE82b3o4eXB0SWduQ0EwMkM5b3JJT0ZsWEFHX3M5dVhYNGhnYlhLZTI4VXVJVExCLVRsSWNoSEpXb1p1T1lXVlptQTV5NGFtQ1hGY29fVnFjV3J2RzJmemxaMWxSTk5xVlByZEF5UjlwTUJEQVE?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"biz.chosun.com","title":"[강세 토픽] 건강기능식품 테마, 녹십자웰빙 +10.64%, 코스맥스엔비티 +4.89% - 조선비즈 - biz.chosun.com","link":"https://news.google.com/rss/articles/CBMigwFBVV95cUxNZUI0MldvbnVIR0EyMUhTWG1tSDJLMFFpMVJvWlFUbFZDaU51N3BPcWhxS04yTUgtbTdKQW1HZUxhQy1JZmpadzl5VlhFTmxON3luM1EtbWtXaHJSekdDMV9SaHBmOHl4anBCNjVLU05HQ3FpVzRibmNzYW9DOExSTVdfNNIBlwFBVV95cUxQeGlOaGY3Z051ZEUyRWQtSkpaV1Y4Qko1RmpvbHJyejlzYVktOE84TmVIakJwc0t3SDB2SHVsQXlBam9LLUN2cjFnb1JycVZHb3JCOW0yMmgxTjd2ZFhCVXYtWVNJTmtBWnUwUnhwbDBKVzVlMFI5clJPQWVHR1ZiYS1PQ2FfUEJsY3JSZWdycjdjV2pjQTlj?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"네이트","title":"[아침밥] 유안타증권 \"코스맥스 외형 성장 지속에도 수익성 둔화\" - 네이트","link":"https://news.google.com/rss/articles/CBMiU0FVX3lxTE1PTUh2N05vRl83WWI1TVF4WmE2bmxpNGhEUUZobVI1NUpSUW8zdHg5djZua0lDOUNKMHowdTEyMGlOMG5SSFpuVTI0RVdZOWkwQ05j?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"yakup.com","title":"코스맥스, 이탈리아 케미노바 인수…유럽 첫 생산기지 확보 - yakup.com","link":"https://news.google.com/rss/articles/CBMitAFBVV95cUxOV1Y5U1pLZ0RXNkd0V3cxdFFtdXByUVBWbmFaa29GQjRnVnFMazQteHZCTjFKRGVuWml0emJWYWF3VnVXLTJVOTBoaDZIVHlsNTcwOXdqc25oeHhKTzc5b2hGcU91VjFJRXZBZFZ1LVNUcy11Z2ptSUZkM3k3NGcxM2p1czBRTklja2lISldIdVJkWGxVeVJneENuRHdIeWF3T1dHNTFYeGJNMHZRNlpzcElSb04?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"뉴스1","title":"K-뷰티' 신성장 동력으로 키운다…범정부, 수출거점·짝퉁근절 '전방위 지원' - 뉴스1","link":"https://news.google.com/rss/articles/CBMiakFVX3lxTFBWR2RLRVdSVFNjNkhjOGlRUDVQbVhLUlJJWjNUQm56Yi13QTlDSWZNSlJjWlk5WWFvOU51dmQyeGRBVE1TQ3N2cUNYVWYwaTZDLU1pZS1uaV94dFBzS3dtamQ4cnI1WVBnNlE?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"데이터투자","title":"한국투자증권, 단기차입 한도 19조 5550억원으로 확대... '운영 효율성 제고' - 데이터투자","link":"https://news.google.com/rss/articles/CBMif0FVX3lxTE0yZk1HWlZ2dFc3MW04aHNVWnZULUlGY3YzdE52VmI3TUVGSjNUT0Z5cVNKMmk5QmVIcEVxakZSbktLWlNtWUFmUUF3VjNpWlZtV19rMjJFc2NUNFh5QTJNdVpZTzlUWVFzQlh6TFpvbENQNjJFOXJIUHExSTgwXzg?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"hankyung.com","title":"증시 고됐던 3월, 국민연금이 담은 종목은 - hankyung.com","link":"https://news.google.com/rss/articles/CBMiVEFVX3lxTE9pVmhmdXRNSDZucHFCeTBIN29HbGVUNDdPVXpwT3QwUGp1NW9ESklWX3hsRnpMb1lBZWdqemVoNEtLUU1lTWFNWkhmaHJrUW5rMG40U9IBVEFVX3lxTE9pVmhmdXRNSDZucHFCeTBIN29HbGVUNDdPVXpwT3QwUGp1NW9ESklWX3hsRnpMb1lBZWdqemVoNEtLUU1lTWFNWkhmaHJrUW5rMG40Uw?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"biz.chosun.com","title":"에스앤디, +9.51% 상승폭 확대 - 조선비즈 - biz.chosun.com","link":"https://news.google.com/rss/articles/CBMigwFBVV95cUxPME50Q1hNNTF6c3dDLVQ3My1MNEtqandmWWJvdmlXemQtbzhYSnpZRjJRSGU4TkkzNTc5TTVDZFFwNFQ4UDB0QXMwYXRJckNzNzFZN3VYNTBTcVEwcWgtM0lUclRfdGhaVTFCbHdmMlktaDZtd25LbGVqOC01Zm1rMmp1RdIBlwFBVV95cUxPNE80bHFBN3NHRlByM2JmVm01Tmt3Vkw1aDg5a0txdUpLRktGaEMxQUdCb3Bpbi1teGlxTkRPY0ZHbVhoN2o5cTJwZnB6T0JLdXI1VG1UYkUzSEVBbGt1ZWZnOGsybmJsYVZCOE5yTlNsXzV0aWZ4RVVhbHRENjhkM2ppUmppUk14RlJiMGdIWVlGRmVacFJN?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"네이트","title":"\"살려달라\" 중동 쇼크에 개미들 비명 터질 때…국민연금이 조용히 쓸어담은 종목은 - 네이트","link":"https://news.google.com/rss/articles/CBMiU0FVX3lxTE5WUVdSc3F0MVdJWkJLN0xPVFhZYmRPSkppNktCUjNMMUo5d3c4NDJzcTAtMGtLdjE3RF9sdVFISWM1QVZCZjBFSTRMZDJCaXVHeWtN?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"mt.co.kr","title":"[여의도 클라쓰] '그리드위즈, 삼성E&A, 에이디테크놀로지' 클라쓰 올릴 종목은? - mt.co.kr","link":"https://news.google.com/rss/articles/CBMiaEFVX3lxTE1TM19ZSG1YTERwbTRhUHhfV2pYcHZDS0FaRXhESE9KMll6Z0IxQU5JU2ZTQ1FpVEY4eDFOa2s2SVZ0VHl5bFp1M0RlVW9oLWE3NnVmSEw5VHRaTXpjc012b0RRV01qblUw?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"네이트","title":"지투파워, 대표이사 변경…김동현 신규 선임 - 네이트","link":"https://news.google.com/rss/articles/CBMiU0FVX3lxTE5XaTdPSU5VVzZVQUVNRnlZUEdDX3JLWE11dDFqTWdRWldmTkRhYTlDOVlVdzk2blFfNFhzRTlCUjVLM1pZWE5ZWFJ3N1dsVExORmY4?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"네이트","title":"[여의도 클라쓰] '그리드위즈, 삼성E&A, 에이디테크놀로지' 클라쓰 올릴 종목은? - 네이트","link":"https://news.google.com/rss/articles/CBMiU0FVX3lxTE0yYUhwb09WWV9XZG4xY2tHcXRJbHlHU0huZFQ0eXJSbmROT3dPaU4yODVRMmdVdXZQNzFGa1hkRmtFT1NSMUc2V1F4Q1RvNWJWSVJJ?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"news.jkn.co.kr","title":"[마감분석] 코스맥스, 기술 특허 취득 소식에 소폭 상승 마감 : 금융 - news.jkn.co.kr","link":"https://news.google.com/rss/articles/CBMiSkFVX3lxTFA5N1IwRWIxVk54dEZ3alJGeVFwSTRfM0EwRURnNUpWR2NDcTRsZUlMUjZkenAzODg1Z1d6MGdDdGUtQVFsVktod2xn?oc=5"},{"date":"2026-04-01","keyword":"코스맥스","media":"news.jkn.co.kr","title":"[특징주] 코스맥스, 세계 뷰티 박람회 수상 및 K-뷰티 성장 기대감에 상승 : 경제 - news.jkn.co.kr","link":"https://news.google.com/rss/articles/CBMiSkFVX3lxTE1NLVJZZWFGX05McXJqTkdjb3VCRkdHbzZrbklSWmc4UnNyVWhxV3dsQXpsdEI4T2gxMGkzQjU3VkloYmNnT2trNXh3?oc=5"},{"date":"2026-04-01","keyword":"화장품 ODM","media":"한국AI부동산신문","title":"이미인-라비오, ‘세포 에너지’ 기반 차세대 항노화 화장품 소재 공동 개발 착수 - 한국AI부동산신문","link":"https://news.google.com/rss/articles/CBMiTEFVX3lxTE0yZE5oWlFUTDctb2NsOC1UR2daNUVZbGprVmNRbWdsVUNLMFh2ZXZfbnVZRTYwam5FVE5xYUwyZ3p1eG9HX2ZmQ3VseFE?oc=5"},{"date":"2026-04-01","keyword":"화장품 ODM","media":"주달","title":"한국화장품제조 투자분석 2026. 03. 31 - 주달","link":"https://news.google.com/rss/articles/CBMic0FVX3lxTE04VlVuMzNScE05ZE16SFk2ZnZaUjdkRVhPeU9MdDhpRnFjNmo4eGRIVTUzRXh3ZWliYnlHYVctZVphZk9XRFNndkh1djJFUU03T0ZPUnpOdlp0al9YWXpISnJoWWphMWJlUjFndmpCVmc5em8?oc=5"},{"date":"2026-04-01","keyword":"화장품 ODM","media":"미디어데일","title":"이미인, 바이오기업 라비오와 세포 에너지 기반 항노화 화장품 개발 - 미디어데일","link":"https://news.google.com/rss/articles/CBMia0FVX3lxTE05YVJVSXk0TUpKSTRIVUZxdlNhWXVEaHBBdWgzVV91TExEeTN4dWg3dUFHa25NMEE0eFd6TjdybW5hYTVpbi0zNlAwQl9EbXF5VS1hUU44Ujl5WWFOeERURVNpTmFvVkc5bzQw?oc=5"},{"date":"2026-04-01","keyword":"화장품 ODM","media":"biz.chosun.com","title":"본느, +29.84% 상한가 - 조선비즈 - biz.chosun.com","link":"https://news.google.com/rss/articles/CBMigwFBVV95cUxOV2lBejdROFZvQ0c4WWdzM3BIMDdqekxMV3ZVOG9wYjBoOVZXOUJUTjRsamlpbEFPYzNIRVYxQk9reUM3eVdZNzRXOUQ1TnNOS2UyOGozd3RtRVBKSDRTRkhkbGxnVDQ5SGdBR3k2YkNJdHpsY0pVdXVtUF9LOW5TQUUwQdIBlwFBVV95cUxNVEd2bTh6bXc2TFZxV2VQUmozVjlvVjJHUFJsOHF4ODNsQ3R4X3BnWnp4Y3dmMkh6LU5zVlJ5YjM4cTE4cDJILWdVYmRjeGp1a0dHM2VQUUV5d1VyS2Rady1lVkN1MDJKd3dxMzZ4OUpTci1XdWVsMkw1M1l6aFo3ajVqQno2Ym9kQTYtMkpEcERuTXliNTRJ?oc=5"},{"date":"2026-04-01","keyword":"화장품 ODM","media":"주달","title":"잉글우드랩 투자분석 2026. 03. 31 - 주달","link":"https://news.google.com/rss/articles/CBMic0FVX3lxTE9wTU1GVzRaYUpaV3ZwUHpGSmJlTVVIVnFHOGJqVk1zS2JsSGVmM1Y2ak5EZmRDZ0VtZVlabEdPUTBqQnBVNG5PMkFfWkJBT3lPQlJzUFVxOGxtb1lwV2xQbVZlWGxMT1NzZ09lbVMxTVVzSzQ?oc=5"},{"date":"2026-04-01","keyword":"화장품 ODM","media":"주달","title":"코스메카코리아 투자분석 2026. 03. 31 - 주달","link":"https://news.google.com/rss/articles/CBMic0FVX3lxTE1OZW03Y01Zc0JORXV1d2JxWlVKSmVobUJiVFNYT01JR2sxcWotWXJQMkdfNnNZcDZQUktZb01QRDBiRnVmcV9Ja3RMa19PSzd2aXM5RmlkVnVUOHgydXdLSE1xN1AtTnplOUFtRE9XNDBadXM?oc=5"},{"date":"2026-04-01","keyword":"화장품 ODM","media":"주달","title":"코스메카코리아 투자분석 2026. 03. 31 - 주달","link":"https://news.google.com/rss/articles/CBMic0FVX3lxTE9HWFphNkV6cEwzZWtPakdMZDg2Y3FtZjFVRG1HTlhvZWRrampJaHBlQ19ud3FCWi1lMERkU1NKRTRqY0hfdi1adzh4TW5GMFQxeVlueVB3WEprRVNfcXplYk15RkMtQ0puaXdFbVdoeVFLQjg?oc=5"},{"date":"2026-04-01","keyword":"화장품 ODM","media":"news.jkn.co.kr","title":"[마감분석] 한국콜마, K-뷰티 수출 호조 속 상승 마감 : 금융 - news.jkn.co.kr","link":"https://news.google.com/rss/articles/CBMiSkFVX3lxTE1qVndRaElMYURXYmlEdm1JcGZPTFhpbC1wMHBhaVFfVENpVlgxZE1PbzVoaXJTRW9ZNi1EVHBqcnVMNzY4SWRxbVNB?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"물류신문","title":"[르포] LX판토스, K-뷰티 해외진출 위한 ‘원스톱 뷰티 물류서비스’ 선보여 - 물류신문","link":"https://news.google.com/rss/articles/CBMia0FVX3lxTE5sSS1SWXBHTWhjR1JtdE1taFpXNnVjX3Z1SFEtcUJmaVlYaFVab3ZuaXE5cGNtZDFBdThiMUxBWmZwQm1sZkNhb2U1MmprTmdnNG1lN1Q1dy1vZ3BkQXprTTYtVkN6cXFrTWtr?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"한국무역협회-KITA.NET","title":"BTS 경제효과'는…K뷰티패션푸드 매장매출 두배·호텔도 만실 - 한국무역협회-KITA.NET","link":"https://news.google.com/rss/articles/CBMi1gFBVV95cUxQMHZkbWE2NWM2ZGY5NUVsbnYwSGF6cDlSMXlxZDJfX0FhS3J0a3hiVVFORldfdVZnT2E2UWE1WEwyQzdVSG9LdF9kSHlLRGdELXhTT0VfX0hkaUhsQkY4RnRrX0M0Mm5oZzk1STJnT2daLWxSQnVyNlhxakpxZzY3b3dXRDhmYThTWXA4RjRINUhNMTAtUnlLRXpnbWVOUmt3R25JdDZWMkJpeHFGdmlmM3puOVJYZXNNYmhXN08zY3dVRkMzR1lyYUNYS1FJSF9RSEVmNnJn?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"반론보도닷컴","title":"[뷰티 트렌드 ①] 브라질 룰라도 받은 K-뷰티... 1조 시장 남성 화장품 ‘뉴노멀’ 되다 - 반론보도닷컴","link":"https://news.google.com/rss/articles/CBMibEFVX3lxTFBfTlVEbkVodng0WGczY3ZfRnVlWDRKeldlTHpSLTk2cWxPSnBsN3BkMURqTXZvcDVrUmhvSGVoU3ViQk9VNHUxUkJrNjNsQUNuLXVJbHZ0QXVHdU9oajJWUVEyVERnbHk5d283WdIBcEFVX3lxTFBoTUFnUjFaOFBSMlU3Z0JOSkVfcnZiVUxNYk9QN2hvY1Z6eGNKMUZxel9JeWx0MExEY3hWM19HekZ0YUxuNzBERUg0UGNDeHFQbUs1NGw2cVVJVlp5a2tPbmtsbjdSQ1NRZlRwelJRa3g?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"yakup.com","title":"K-뷰티, '2026 코스모프로프 볼로냐' 통해 유럽 시장 본격 공략 - yakup.com","link":"https://news.google.com/rss/articles/CBMi2AFBVV95cUxQVTJYanUyeVZjSnM2U2hRakNxQTdaS0c0QU44am0tVWp2MWNqTWxKOXFOa3NHVnVSbGJVbUtrNTRoUlhLTFljOENxVUtPdE9mcmh4c2czQTl3Z2JhMkVweVhscUhSaUFBUk9zeUVfbTRReUlnRE9HLUdvNnhwYmotN1VDT2ZHN1dIQThyWW5IYUY1MFdLTUt2R2VIMU9MRFFrSDR3N3R5TGloQWtUODhsdkJxeDNTNmYxckwwNkRUNTdXY0lpblozMkRDVXM0NjBnMUxVWXhiM3k?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"헬스경향","title":"콜마비앤에이치-한국수입협회, ‘K-뷰티·헬스케어’ 교류 행사 개최 - 헬스경향","link":"https://news.google.com/rss/articles/CBMiakFVX3lxTFBVOHNMWmpyWDJQZUU1NktqMXAwVEp5NElLdnlkaEtsbU44ZzFJZEFpQ0RWQzM2ZlM3Q2QxNTdILVFpcDF2OWprUlQwS0JnVmNTWlNFTDVQcEdhYy1iVml5Ry0teTlIOE81SUE?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"정필","title":"[칼럼] K-뷰티를 동력으로 지역 상권 활력과 수출 전략 다각화 구축 - 정필","link":"https://news.google.com/rss/articles/CBMiR0FVX3lxTFBGcGJ2OEoyek5WQU9VWDV4MklnUFY4ZGRqX3VtcjRJR0twZnh5RFF0d2VydjEtb3lDdVNHYVZHQVh0YVU3V1Zv?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"경기일보","title":"주한 여성대사 10인, K-뷰티 현장 찾았다… 수입협회·콜마비앤에이치 ‘맞손’ - 경기일보","link":"https://news.google.com/rss/articles/CBMiW0FVX3lxTE94MDdkRFIybTluYnd0UkJlWlFIaDBLYjh2NTFVaXZKMC1DQm9WejVQazhmNXloVVhzeVI5eTdrSHlDZklpc0tvNUxjSmZnUTA4R2hIUkZLbUwxMlE?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"아이뉴스24","title":"콜마비앤에이치, 10개국 대사 초청⋯'K-뷰티·헬스케어' 협력 모색 - 아이뉴스24","link":"https://news.google.com/rss/articles/CBMiTEFVX3lxTE9PRk0zcDNSVTV3UlNrWVdIQjZVcjd2WmVEZlprMFpxTHVMUTZiaHhwODNzbjJtMlp5YUk1b2VvUUhGcGstRnh4a3VKQzc?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"시사통신","title":"경산의 K-뷰티, 볼로냐에서 성과 입증 - 시사통신","link":"https://news.google.com/rss/articles/CBMiaEFVX3lxTFBSaTlFdkY5VmhFU0ZmU21WUHo3YW9MNmlXZExSdEt1RFhDWHJqbUZWYjA2a3hZbnRNbzJNUjQ4aFljWmNOb3hQZzRmQllwdUV6Rnp5RU9obmZYSmFLMm8yN0VFa3JhZFd20gFrQVVfeXFMUHBQdHpwcUYteTlmeEd1N0NFMU5ZV1dCSV9Ja18zUWFuUlozazlyT05oODhiUW1JM1hwLVBWUDB4TldfaC0zRUJGeURSbFpBcURxRjFRVDNyRWxnOWdFRkFfYzZJaFY3Z3hsd2M?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"이뉴스투데이","title":"기술 넘어 ‘교육 시스템’까지···준오아카데미, 中 청두서 K뷰티 확장 - 이뉴스투데이","link":"https://news.google.com/rss/articles/CBMicEFVX3lxTE9zZTE5aGFxVk5zRE9UbUxCMDRtOHZhdGRjT2ZvanNrODYzTTN1Yk92akZIekR3Y0puNGRsVThpNVFfemw3ajhGXy0wZEQ4VWVjWVA3VXk2ajFNeDc0bUJITDFyMlJmXzBDelZYTDE3S1rSAXRBVV95cUxPVVc0OGJWWC1lek5fTFg5THV2WEo3d2xTdHNzQ29XVnRiQXJZT01sN0pUallTNXp1Rk1kLXlXUTdFWmV1amNoYS1pQVlmU1RfOFdWdl9YRnhoaEo1ZjlROWNQYkVyY3NxUkRWTy1VcmpqNVNMUQ?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"인사이트코리아","title":"K-뷰티 한자리에…인-코스메틱스 코리아 2026 개최 - 인사이트코리아","link":"https://news.google.com/rss/articles/CBMid0FVX3lxTE52WWItSUE3OGhjZ3NaVU14V09UVUVaVGxGeF9kNXlDU3FlWmdPb3VMYTJfcl82WTR4Ml95Nk9GSmJGVkRsM29abU1mdmVMRkRzLTZWNDFOYUdpbWZpNGhQQ256bWlBS2hKZEV1VkdYcExGQ1JRbEZz0gF3QVVfeXFMTnZZYi1JQTc4aGNnc1pVTXhXT1RVRVpUbEZ4X2Q1eUNTcWVaZ09vdUxhMl9yXzZZNHgyX3k2T0ZKYkZWRGwzb1ptTWZ2ZUxGRHMtNlY0MU5hR2ltZmk0aFBDbnptaUFLaEpkRXVWR1hwTEZDUlFsRnM?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"cmn.co.kr","title":"‘파리 에펠커머스 약국’ K뷰티 인플루언서와 손잡다 - cmn.co.kr","link":"https://news.google.com/rss/articles/CBMia0FVX3lxTE5XQ1pDUGk0VU1SdTlfM1NuQ0ZLVnZjYzFFQkZ4X3hUOUdqTzQ2UFBPMHNKaENIZVBONnlFTFVnaGt6SHhyVWdZOWFwYkQ1c2puYVV3ZnlEV1hQakVfaklxejBsVHl6U3k4UkxF?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"더리포트","title":"K-뷰티 원료 총집합···‘인-코스메틱스 코리아 2026’ 참여사 모집 - 더리포트","link":"https://news.google.com/rss/articles/CBMibkFVX3lxTFB0R0FBUlJxNnVNbEI1eXZZUVJnSE9GNXpUSVpyQW5BYkduc29SZFJSUzdvZHJXNDlKU3FvNDlJUTI1bnBGZzBqM2R1c2p0ekViVTQ1TVcwT0RuYTVZdEotS1EzUlVFOXU5ODN2MWZR?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"K-Life TV","title":"중소벤처기업부,'K-뷰티 수출 거점' 지방 2곳에 조성 - K-Life TV","link":"https://news.google.com/rss/articles/CBMibEFVX3lxTFAzVV9zUFF0bEZYQjZidk5RWDB2NlFZWlNqODVib0RoVFlXSUhneVdZX1M3OFZMQjVsZ1U0ZnphUlBCRE9yWElvenlWS2NuVU1sWUR1ZExkYVNvUXFTRXZwTkJ4T2tPT2d4dC1EXw?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"익산열린신문","title":"K뷰티, 북미시장 공략 본격화···온·오프라인 유통망 확대 - 익산열린신문","link":"https://news.google.com/rss/articles/CBMiZkFVX3lxTE5rbW00WW9TTE9aM19nR2dlNjFXYkt1U0ZsaFA0M0tma2ZzZ0YyTnlDZ2dIZEZVejJRMy14OXVOQTUzNXZERGJYUGg4STBBMmlFTTRaLXdlYTllX1prUFdGa2RVRnY1QQ?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"벤처스퀘어","title":"정부, K-뷰티 글로벌 거점 조성 본격화…지방정부 2곳 선정해 시범 운영 - 벤처스퀘어","link":"https://news.google.com/rss/articles/CBMiT0FVX3lxTE0zbWRET3kzSm11YWRZX1hRUE5pSnFodEtvOUpFNjlfcEFqSlFYbk4wMHpNNlBMYWwwQndWZ1ZlLUZkTkNrVGlldElWQ0JwQmc?oc=5"},{"date":"2026-04-01","keyword":"K뷰티","media":"이코노미스트","title":"베컴 막내딸도 올라탔다…판 키우는 ‘세포라 키즈’ K-뷰티로 몰린다 - 이코노미스트","link":"https://news.google.com/rss/articles/CBMiYkFVX3lxTE9rLUZJM0d5V0pKTnF1ZldmV282RTJ6Z3BLam85ZFNrYWltNV9JQndlREdoT0JMaTZQUEhVeGZ3eVJ2cU1OaWFXZHllT2pVMXdpcnFJTDNHTV9vdW04bjV4a1RR?oc=5"}],"company_cal":[{"date":"4","events":["0800 월례조회","(조회사 : 신태균 고문)","0850 영업회의(판교)","1030 전략품목발표회(판교)"],"month":"3월"},{"date":"9","events":["1000 코스맥스펫 확대회의(판교)","1100 코스맥스파마 확대회의(판교)"],"month":"3월"},{"date":"10","events":["0900 확대경영회의(판교)"],"month":"3월"},{"date":"11","events":["0900 코스맥스/비티아이 경영위원회(판교)","1000 중국·동남아 법인 확대경영회의(판교)"],"month":"3월"},{"date":"12","events":["0900 코스맥스네오 확대회의(판교)","1000 믹스앤매치 확대회의(판교)","1100 레시피회의(판교)"],"month":"3월"},{"date":"13","events":["0800 NBT 확대회의(판교)","1030 바이오 확대회의(판교)"],"month":"3월"},{"date":"16","events":["0900 신제품전략회의(판교)"],"month":"3월"},{"date":"18","events":["0800 코스맥스USA 확대경영회의(판교)"],"month":"3월"},{"date":"24","events":["0900 임원회의(판교)"],"month":"3월"},{"date":"25","events":["1030 코스맥스 글로벌 생산기술교류회(화성)","1500 생산협의회(화성)","1600 제안심사위원회(화성)"],"month":"3월"},{"date":"1.0","events":["0800 월례조회","(조회사 : 강승현 원장)","0850 영업회의(판교)","1030 전략품목발표회(판교)"],"month":"4월"},{"date":"9","events":["0900 확대경영회의(판교)"],"month":"4월"},{"date":"10","events":["1330 중국·동남아 법인 확대경영회의(판교)"],"month":"4월"}],"team_cal":[{"date":"2026-03-30","events":"🔹회장님(이성웅)"},{"date":"2026-03-31","events":"🔹마이데일리(팀)"},{"date":"2026-04-01","events":"🔹HR(권이윤)\n🔹아시아타임스(이성웅)"},{"date":"2026-04-03","events":"🔹딜사이트(권이윤)"},{"date":"2026-04-07","events":"🔹아주경제(이성웅)\n🔹파이낸셜뉴스(권이윤)"},{"date":"2026-04-08","events":"🔹대한경제(팀)\n🔹대한경제(이성웅)\n🔹서울파이낸스(권이윤)"},{"date":"2026-04-09","events":"🔹한국경제(팀)\n🔹뉴스1(이성웅)\n🔹뉴스핌(이성웅)\n🔹한국경제(팀)"},{"date":"2026-04-10","events":"🔹전자신문(권이윤)"},{"date":"2026-04-13","events":"🔹로이터통신(권이윤)\n🔹HR(이성웅)"},{"date":"2026-04-14","events":"🔹기부약정식(팀)\n🔹문화일보(팀)\n🔹문화일보(이성웅)"},{"date":"2026-04-15","events":"🔹이투데이(이성웅)"},{"date":"2026-04-16","events":"🔹브릿지경제(이성웅)"},{"date":"2026-04-17","events":"🔹CEO스코어데일리(이성웅)"},{"date":"2026-04-20","events":"🔹동행미디어 시대(팀)"},{"date":"2026-04-21","events":"🔹서울경제(팀)"},{"date":"2026-04-22","events":"🔹한국일보(팀)"},{"date":"2026-04-23","events":"🔹소비자가만드는신문(권이윤)"},{"date":"2026-04-28","events":"🔹쿠키뉴스(팀)"},{"date":"2026-04-30","events":"🔹청년일보(권이윤)"}],"budget_rows":[{"type":"일간지","name":"조선일보","a26":90.0,"a25":75,"s26":10,"rate":0.1111111111,"s25":30,"isSub":false,"isTotal":false,"isSingle":false},{"type":"일간지","name":"중앙일보","a26":30.0,"a25":30,"s26":0,"rate":0,"s25":10,"isSub":false,"isTotal":false,"isSingle":false},{"type":"일간지","name":"동아일보","a26":70.0,"a25":62,"s26":0,"rate":0,"s25":10,"isSub":false,"isTotal":false,"isSingle":false},{"type":"일간지","name":"한국일보","a26":10.0,"a25":5,"s26":0,"rate":0,"s25":5,"isSub":false,"isTotal":false,"isSingle":false},{"type":"일간지","name":"문화일보","a26":10.0,"a25":7,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"일간지","name":"아시아투데이","a26":10.0,"a25":8,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"일간지 계","name":null,"a26":220,"a25":187,"s26":10,"rate":0.04545454545,"s25":55,"isSub":true,"isTotal":false,"isSingle":false},{"type":"경제지","name":"매일경제","a26":70.0,"a25":68,"s26":4.4,"rate":0.06285714286,"s25":45,"isSub":false,"isTotal":false,"isSingle":false},{"type":"경제지","name":"매경이코노미","a26":35.0,"a25":34,"s26":0,"rate":0,"s25":15,"isSub":false,"isTotal":false,"isSingle":false},{"type":"경제지","name":"한국경제","a26":80.0,"a25":87,"s26":10.55,"rate":0.131875,"s25":11,"isSub":false,"isTotal":false,"isSingle":false},{"type":"경제지","name":"머니투데이","a26":60.0,"a25":57,"s26":0,"rate":0,"s25":10,"isSub":false,"isTotal":false,"isSingle":false},{"type":"경제지","name":"서울경제","a26":40.0,"a25":29,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"경제지","name":"아시아경제","a26":30.0,"a25":23,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"경제지","name":"헤럴드경제","a26":10.0,"a25":5,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"경제지","name":"이데일리","a26":35.0,"a25":30,"s26":0,"rate":0,"s25":4,"isSub":false,"isTotal":false,"isSingle":false},{"type":"경제지","name":"전자신문","a26":6.0,"a25":4,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"경제지","name":"아주경제","a26":10.0,"a25":5,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"경제지","name":"파이낸셜뉴스","a26":10.0,"a25":8,"s26":3,"rate":0.3,"s25":5,"isSub":false,"isTotal":false,"isSingle":false},{"type":"경제지","name":"이투데이","a26":10.0,"a25":8,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"경제지 계","name":null,"a26":396,"a25":358,"s26":17.95,"rate":0.04532828283,"s25":93,"isSub":true,"isTotal":false,"isSingle":false},{"type":"통신/방송","name":"연합뉴스","a26":25.0,"a25":18,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"통신/방송","name":"TV조선","a26":15.0,"a25":10,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"통신/방송","name":"뉴스1","a26":35.0,"a25":35,"s26":0,"rate":0,"s25":4,"isSub":false,"isTotal":false,"isSingle":false},{"type":"통신/방송","name":"한국경제TV","a26":15.0,"a25":15,"s26":15,"rate":1,"s25":15,"isSub":false,"isTotal":false,"isSingle":false},{"type":"통신/방송","name":"서울경제TV","a26":7.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"통신/방송","name":"MBN","a26":5.0,"a25":4,"s26":0,"rate":0,"s25":1,"isSub":false,"isTotal":false,"isSingle":false},{"type":"통신/방송","name":"뉴시스","a26":20.0,"a25":13,"s26":6,"rate":0.3,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"통신/방송","name":"MTN","a26":20.0,"a25":17,"s26":0,"rate":0,"s25":8,"isSub":false,"isTotal":false,"isSingle":false},{"type":"통신/방송","name":"뉴스핌","a26":15.0,"a25":12,"s26":5,"rate":0.3333333333,"s25":8,"isSub":false,"isTotal":false,"isSingle":false},{"type":"통신/방송 계","name":null,"a26":157,"a25":127,"s26":26,"rate":0.1656050955,"s25":39,"isSub":true,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뉴데일리","a26":20.0,"a25":16,"s26":3,"rate":0.15,"s25":5,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"조선비즈","a26":10.0,"a25":9,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"딜사이트","a26":25.0,"a25":21,"s26":8,"rate":0.32,"s25":7,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"딜사이트TV","a26":10.0,"a25":6,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뷰티한국","a26":5.0,"a25":0,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"데일리안","a26":10.0,"a25":7,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"한경닷컴","a26":10.0,"a25":10,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"스마트타임즈","a26":25.0,"a25":22,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"데일리팝","a26":10.0,"a25":10,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"시장경제","a26":10.0,"a25":10,"s26":3,"rate":0.3,"s25":5,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"이코노미스트(이데일리엠)","a26":10.0,"a25":8,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"투데이신문","a26":6.0,"a25":6,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"일요신문","a26":20.0,"a25":11,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"매일일보","a26":7.0,"a25":7,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"더벨","a26":20.0,"a25":18,"s26":3,"rate":0.15,"s25":11,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"SBS BIZ","a26":10.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"데일리한국","a26":10.0,"a25":8,"s26":3,"rate":0.3,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"더데일리스탁","a26":2.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"직썰","a26":5.0,"a25":0,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"팜뉴스","a26":2.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뉴스드림","a26":6.0,"a25":6,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"포인트데일리","a26":5.0,"a25":4,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뉴스웨이","a26":10.0,"a25":5,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"한국면세뉴스","a26":5.0,"a25":4,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"프레스맨","a26":6.0,"a25":6,"s26":3,"rate":0.5,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"마이데일리","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"런앤이매진(서울경제)","a26":3.0,"a25":0,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"블로터","a26":15.0,"a25":6,"s26":5,"rate":0.3333333333,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"신아일보","a26":5.0,"a25":5,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"머니S","a26":25.0,"a25":21,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"비즈워치","a26":25.0,"a25":21,"s26":0,"rate":0,"s25":10,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"NBN뉴스","a26":5.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뉴스로드","a26":5.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뉴스캔","a26":6.0,"a25":6,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"일코노미뉴스","a26":8.0,"a25":8,"s26":2,"rate":0.25,"s25":2,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"톱데일리","a26":6.0,"a25":6,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"더팩트","a26":40.0,"a25":40,"s26":10,"rate":0.25,"s25":10,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"이뉴스투데이","a26":5.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"비즈트리뷴","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"더구루","a26":6.0,"a25":3,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"IB토마토","a26":5.0,"a25":4,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"한스경제","a26":7.0,"a25":7,"s26":3,"rate":0.4285714286,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"메트로신문","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"포춘코리아","a26":10.0,"a25":16,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"스포츠조선","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"시사캐스트","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"FETV","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"약국신문","a26":3.0,"a25":1,"s26":0,"rate":0,"s25":1,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"쿠키뉴스","a26":6.0,"a25":6,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뉴스피아","a26":6.0,"a25":3,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"EBN","a26":6.0,"a25":4,"s26":0,"rate":0,"s25":2,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"매경헬스","a26":6.0,"a25":4,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"헬스경향","a26":6.0,"a25":5,"s26":3,"rate":0.5,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"한국금융신문","a26":6.0,"a25":6,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"디지털포스트","a26":5.0,"a25":5,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"주간한국","a26":6.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뷰어스","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"더트래커","a26":6.0,"a25":6,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"소셜밸류","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"한국정경신문","a26":3.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"비욘드포스트","a26":3.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"IT조선","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"오늘경제","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"대한경제","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뉴스워커","a26":10.0,"a25":6,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"비즈니스플러스","a26":6.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"월요신문","a26":5.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뉴스프리존","a26":5.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"라이브뉴스","a26":5.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"데이터솜","a26":5.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"리드경제","a26":2.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"핸드메이커","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"파이낸스뉴스","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"한경비즈니스","a26":10.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"헬로티","a26":2.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"공공뉴스","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"데일리팜","a26":2.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"제보팀장","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뉴스투데이","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"서울파이낸스","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뉴스W","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"어패럴뉴스","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"남다른디테일","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"아이뉴스24","a26":6.0,"a25":5,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"글로벌에픽","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"코리아헤럴드","a26":1.0,"a25":1,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"CEO스코어데일리","a26":6.0,"a25":3,"s26":0,"rate":0,"s25":3,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"에너지경제","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"CBS","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"메가경제","a26":6.0,"a25":5,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"미래경제","a26":3.0,"a25":0,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"뉴스웍스","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"컨슈머타임즈","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"위메이크뉴스","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"시사저널","a26":40.0,"a25":30,"s26":10,"rate":0.25,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"리버티코리아","a26":2.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"메디컬투데이","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"투데이코리아","a26":2.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"비즈니스포스트","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"Mog","a26":5.0,"a25":5,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"인사이드비나","a26":6.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"MS투데이","a26":6.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"하비엔","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"RPM9(생생비즈)","a26":2.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"한양경제","a26":2.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"금융경제플러스","a26":6.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인","name":"디지털타임스","a26":3.0,"a25":3,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"온라인 계","name":null,"a26":732,"a25":585,"s26":56,"rate":0.07650273224,"s25":104,"isSub":true,"isTotal":false,"isSingle":false},{"type":"전문지","name":"뷰티누리","a26":37.0,"a25":36,"s26":6.3,"rate":0.1702702703,"s25":12,"isSub":false,"isTotal":false,"isSingle":false},{"type":"전문지","name":"장업신문","a26":28.0,"a25":24,"s26":4.3,"rate":0.1535714286,"s25":8,"isSub":false,"isTotal":false,"isSingle":false},{"type":"전문지","name":"주간신문CMN","a26":27.0,"a25":25,"s26":4.3,"rate":0.1592592593,"s25":9,"isSub":false,"isTotal":false,"isSingle":false},{"type":"전문지","name":"주간코스메틱","a26":27.0,"a25":24,"s26":4.5,"rate":0.1666666667,"s25":8,"isSub":false,"isTotal":false,"isSingle":false},{"type":"전문지","name":"데일리코스메틱","a26":19.0,"a25":24,"s26":3,"rate":0.1578947368,"s25":8,"isSub":false,"isTotal":false,"isSingle":false},{"type":"전문지","name":"코스인","a26":13.0,"a25":12,"s26":2.4,"rate":0.1846153846,"s25":4,"isSub":false,"isTotal":false,"isSingle":false},{"type":"전문지","name":"코스모닝","a26":26.0,"a25":37,"s26":5.4,"rate":0.2076923077,"s25":10,"isSub":false,"isTotal":false,"isSingle":false},{"type":"전문지","name":"더케이뷰티","a26":15.0,"a25":12,"s26":1.82,"rate":0.1213333333,"s25":4,"isSub":false,"isTotal":false,"isSingle":false},{"type":"전문지","name":"보건신문","a26":3.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"전문지 계","name":null,"a26":195,"a25":196,"s26":32.02,"rate":0.1642051282,"s25":63,"isSub":true,"isTotal":false,"isSingle":false},{"type":"SNS채널","name":"기획/제작","a26":null,"a25":1.19,"s26":0.6,"rate":"0","s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"SNS채널","name":"섭외","a26":null,"a25":12.8,"s26":0,"rate":"0","s25":0,"isSub":false,"isTotal":false,"isSingle":false},{"type":"SNS채널","name":"광고","a26":null,"a25":11.401306,"s26":2.227171,"rate":"0","s25":4.253093,"isSub":false,"isTotal":false,"isSingle":false},{"type":"SNS채널","name":"기타(경품, 촬영용 소품)","a26":null,"a25":8.175926,"s26":1.1745,"rate":"0","s25":2.45044,"isSub":false,"isTotal":false,"isSingle":false},{"type":"SNS채널 계","name":null,"a26":100.0,"a25":24,"s26":4.001671,"rate":0.04001671,"s25":6.703533,"isSub":true,"isTotal":false,"isSingle":false},{"type":"글로벌대행","name":"PR뉴스와이어","a26":30.0,"a25":2,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":true},{"type":"글로벌PR","name":"해외매체","a26":70.0,"a25":25,"s26":0,"rate":0,"s25":25,"isSub":false,"isTotal":false,"isSingle":true},{"type":"예비비","name":"기타","a26":100.0,"a25":1.19286,"s26":0,"rate":0,"s25":0,"isSub":false,"isTotal":false,"isSingle":true},{"type":"합계","name":null,"a26":2000,"a25":1505.19286,"s26":145.971671,"rate":0.0729858355,"s25":385.703533,"isSub":true,"isTotal":true,"isSingle":false}]};
+const TABS=[
+  {id:'today',l:'📊 TODAY'},
+  {id:'outing',l:'📊 외근현황'},
+  {id:'taskProg',l:'✅ 업무_진행'},
+  {id:'taskDone',l:'✅ 업무_완료'},
+  {id:'schedUp',l:'📅 일정_업로드'},
+  {id:'schedTeam',l:'📅 일정_팀'},
+  {id:'clip',l:'📒 미디어클리핑'},
+  {id:'budget',l:'💰 예산현황'},
+  {id:'monthly',l:'💰 당월현황'},
+  {id:'pr',l:'📰 홍보현황'},
+  {id:'logo',l:'📦 유어로고'},
+  {id:'comCal',l:'📒 전사일정'},
+];
+
+const now=new Date(),dn=['일','월','화','수','목','금','토'];
+document.getElementById('hdD').textContent=`${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 (${dn[now.getDay()]})`;
+const tBar=document.getElementById('tBar'),pan=document.getElementById('panels');
+TABS.forEach((t,i)=>{
+  const b=document.createElement('button');b.className='tab'+(i===0?' on':'');b.textContent=t.l;
+  b.onclick=()=>{document.querySelectorAll('.tab').forEach((x,j)=>x.classList.toggle('on',j===i));document.querySelectorAll('.tp').forEach(x=>x.classList.toggle('on',x.id==='p-'+t.id))};
+  tBar.appendChild(b);
+  const d=document.createElement('div');d.className='tp'+(i===0?' on':'');d.id='p-'+t.id;pan.appendChild(d);
+});
+
+function bd(t,x){return`<span class="bd bd-${t}">${x}</span>`}
+function prB(p){if(!p)return'';if(p.includes('중요'))return bd('f','🔥중요');if(p.includes('긴급'))return bd('pk','🚨긴급');return bd('n','⭐️보통')}
+function stB(s){if(!s)return'';if(s.includes('진행'))return bd('p','진행중');if(s.includes('완료'))return bd('d','완료');return bd('r','예정/준비')}
+function fD(d){
+  if(!d)return'-';
+  var s=String(d).trim();
+  if(!s||s==='-')return'-';
+  // ISO datetime: 2026-04-29T15:00:00.000Z
+  var m=s.match(/(\d{4})-(\d{2})-(\d{2})T/);
+  if(m)return +m[2]+'/'+ +m[3];
+  // Standard date: 2026-04-29 or 2026.4.29 or 2026/4/29
+  m=s.match(/(\d{4})[-\/.]\s*(\d{1,2})[-\/.]\s*(\d{1,2})/);
+  if(m)return +m[2]+'/'+ +m[3];
+  return s;
+}
+// Normalize ISO date to YYYY-MM-DD for filtering/display
+function nD(d){
+  if(!d)return'';
+  var s=String(d).trim();
+  var m=s.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if(m)return m[1]+'-'+m[2]+'-'+m[3];
+  m=s.match(/(\d{4})[-\/.]\s*(\d{1,2})[-\/.]\s*(\d{1,2})/);
+  if(m)return m[1]+'-'+String(+m[2]).padStart(2,'0')+'-'+String(+m[3]).padStart(2,'0');
+  return s;
+}
+function fA(v){if(!v||v==='-')return'-';const n=parseFloat(v);return isNaN(n)?v:n.toLocaleString()}
+function e(s){return s?String(s).replace(/</g,'&lt;'):''}
+
+// ===== 📊 TODAY =====
+(function(){
+  const el=document.getElementById('p-today');
+  const tt=D.today_tasks||[], ti=D.today_important||[];
+  const row=(t,f)=>`<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid rgba(42,48,80,.3);align-items:center;flex-wrap:wrap">
+    ${bd(f?'f':'n',e(t.category)||'')} <span style="font-weight:600;min-width:80px;font-size:12px">${e(t.media)||''}</span>
+    <span style="font-size:12px;flex:1">${e(t.content)||''}</span>
+    <span style="font-size:11px;color:var(--tx2)">${e(t.person)||''}</span> ${t.status?stB(t.status):''}
+  </div>`;
+
+  // 기획기사 인벤토리 - D.articles_inventory에서 로드 (동기화로 업데이트)
+  const invItems=D.articles_inventory||[
+    {content:"코스맥스, 伊 \u2018케미노바\u2019 품고 뷰티 본고장 입성…아시아·북미·유럽 잇는 \u2018글로벌 뷰티 영토\u2019 완성",media:"동아일보"},
+    {content:"(기획자료-v1)코스맥스, K뷰티 수출 견인차 역할 \u2018톡톡\u2019…영토 확대로 \u2018글로벌 1위\u2019 굳힌다",media:"미정"},
+    {content:"(기획자료-v2)코스맥스, 매출 5퍼센트 투자 결실…글로벌 특허 2000건 초격차 기술 선도",media:"미정"},
+    {content:"(기획자료-v3)코스맥스, \u2018바름·다름·아름\u2019 철학 ESG 경영…친환경 기술·인재 육성 앞장",media:"미정"},
+    {content:"(기획자료-v4)가장 한국적인 것이 세계적인 것…코스맥스, K뷰티 헤리티지 선도",media:"미정"},
+    {content:"코스맥스, 1Q 선케어 의뢰 25↑…\u2018스킨케어링·선케어 일상화\u2019 주도",media:"헤럴드경제"},
+    {content:"샤넬 만들던 伊 인터코스 역성장…K뷰티 스피드에 밀린 \u2018글로벌 뷰티 권력\u2019",media:"연합뉴스"},
+    {content:"만우절 스킨푸드 협업 SNS 이벤트",media:"아이뉴스"},
+  ];
+
+  // 주요 공유사항 - D.notices에서 로드 (동기화로 업데이트)
+  const notices=D.notices||[
+    {label:"대시보드 작성",items:["업무_진행 시트에서 언론미팅 완료시 미팅노트 시트에도 전송(v260309)","※시트 열 구성 바꾸는 수정 진행할 시 반드시 이성웅 과장에게 노티!","※ 진행중 작업 '진행현황' : (보도자료) 작성중 or 컨펌대기 / (SNS) 제작중 or 컨펌대기 → 선택하여 기입"]},
+    {label:"SNS",items:["4/1 만우절 캠페인 (스킨푸드 x 코스맥스)"]},
+    {label:"휴가 일정",items:["이성웅 4/2 - 4/6"]},
+  ];
+  window._notices=notices; // 다른 탭에서도 접근 가능하도록
+
+  el.innerHTML=`
+  <div class="g2">
+    <div class="cd"><div class="cd-h">🚨 TODAY 주요 업무 일정</div><div class="cd-b">${tt.filter(t=>t.category).map(t=>row(t,0)).join('')||'<span style="color:var(--tx2);font-size:12px">등록된 일정 없음</span>'}</div></div>
+    <div class="cd"><div class="cd-h">🔥 중요 업무 진행 상황</div><div class="cd-b">${ti.filter(t=>t.category).map(t=>row(t,1)).join('')||'<span style="color:var(--tx2);font-size:12px">중요 업무 없음</span>'}</div></div>
+  </div>
+  <div class="g2" style="margin-top:14px">
+    <div class="cd"><div class="cd-h">📰 기획 기사 인벤토리</div><div class="tw2"><table>
+      <thead><tr><th>내용</th><th style="width:90px">전달매체</th></tr></thead>
+      <tbody>${invItems.map(x=>{
+        // fontLines 실시간 연동: x.strikethrough===true이면 취소선 (Apps Script getFontLines 기반)
+        const tdCls=x.strikethrough?' class="inv-done"':'';
+        return`<tr><td style="font-size:12px"${tdCls}>${e(x.content)}</td><td style="font-weight:600">${x.media==='미정'?bd('r','미정'):bd('p',e(x.media))}</td></tr>`;
+      }).join('')}</tbody>
+    </table></div></div>
+    <div class="cd"><div class="cd-h">📌 주요 공유사항</div><div class="cd-b">
+      ${notices.map(n=>`<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:700;color:var(--ac);margin-bottom:4px">[${e(n.label)}]</div>${n.items.map(i=>`<div style="font-size:12px;color:var(--tx);padding:3px 0;padding-left:8px;border-left:2px solid var(--bd);margin-bottom:3px">${e(i)}</div>`).join('')}</div>`).join('')}
+    </div></div>
+  </div>`;
+})();
+
+// ===== Multi-select dropdown helper =====
+const SST='background:var(--sf2);border:1px solid var(--bd);border-radius:6px;padding:6px 10px;color:var(--tx);font-size:12px;font-family:inherit;outline:none;cursor:pointer;min-width:100px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27%3E%3Cpath d=%27M1 1l5 5 5-5%27 stroke=%27%238b90a8%27 fill=%27none%27 stroke-width=%271.5%27/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px';
+function makeMultiDrop(containerId, label, items, renderFn){
+  const wrap=document.getElementById(containerId);
+  wrap.innerHTML=`<div style="position:relative;display:inline-block" id="${containerId}_w">
+    <button style="${SST};min-width:120px;text-align:left" id="${containerId}_btn">${label} 전체</button>
+    <div id="${containerId}_dd" style="display:none;position:absolute;top:100%;left:0;margin-top:4px;background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:6px;z-index:50;min-width:160px;max-height:240px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.4)"></div>
+  </div>`;
+  const btn=document.getElementById(containerId+'_btn'), dd=document.getElementById(containerId+'_dd');
+  const sel=new Set();
+  function drawDD(){
+    dd.innerHTML=items.map(it=>`<label style="display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:4px;cursor:pointer;font-size:12px;color:var(--tx);transition:.15s" onmouseover="this.style.background='var(--sf2)'" onmouseout="this.style.background='transparent'">
+      <input type="checkbox" ${it==='전체'?(sel.size===0?'checked':''):(sel.has(it)?'checked':'')} data-v="${e(it)}" style="accent-color:var(--ac);cursor:pointer"> ${e(it)}
+    </label>`).join('');
+    dd.querySelectorAll('input').forEach(cb=>{
+      cb.onchange=()=>{
+        const v=cb.dataset.v;
+        if(v==='전체'){sel.clear()}else{if(sel.has(v))sel.delete(v);else sel.add(v)}
+        drawDD(); updateBtn(); renderFn();
+      };
+    });
+  }
+  function updateBtn(){
+    if(sel.size===0) btn.textContent=label+' 전체';
+    else if(sel.size===1) btn.textContent=[...sel][0];
+    else btn.textContent=label+' '+sel.size+'개 선택';
+  }
+  btn.onclick=(ev)=>{ev.stopPropagation();dd.style.display=dd.style.display==='none'?'block':'none';drawDD()};
+  document.addEventListener('click',ev=>{if(!wrap.contains(ev.target))dd.style.display='none'});
+  return ()=>sel.size===0?null:[...sel];
+}
+
+// ===== ✅ 업무_진행 =====
+(function(){
+  const el=document.getElementById('p-taskProg'), prog=D.tasks_progress||[];
+  // 구분 카테고리 고정 순서 (그룹별)
+  const CAT_ORDER=['취재응대','보도자료','언론미팅','포럼/행사','기획기사','이슈대응','촬영','제작/업로드','고객사미팅','콘텐츠미팅','내부보고','기타','휴가/교육'];
+  const existCats=[...new Set(prog.map(t=>t.category).filter(Boolean))];
+  const cats=['전체',...CAT_ORDER.filter(c=>existCats.includes(c)),...existCats.filter(c=>!CAT_ORDER.includes(c))];
+  const persons=['전체',...new Set(prog.map(t=>t.person).filter(Boolean))];
+  const inP=prog.filter(t=>t.status&&t.status.includes('진행')).length;
+  const rdy=prog.filter(t=>t.status&&t.status.includes('예정')).length;
+  const imp=prog.filter(t=>t.priority&&t.priority.includes('중요')).length;
+  let statusFilter=null; // null=전체, 'prog'=진행중, 'rdy'=예정, 'imp'=중요
+
+  // 카테고리 그룹 배지 색
+  function catBd(cat){
+    const G1=['취재응대','보도자료','언론미팅','포럼/행사','기획기사','이슈대응'];
+    const G2=['촬영','제작/업로드','고객사미팅','콘텐츠미팅'];
+    if(G1.includes(cat))return`<span class="bd bd-cat1">${e(cat)}</span>`;
+    if(G2.includes(cat))return`<span class="bd bd-cat2">${e(cat)}</span>`;
+    return`<span class="bd bd-cat3">${e(cat)}</span>`;
+  }
+
+  el.innerHTML=`<div style="display:flex;gap:12px;margin-bottom:14px;align-items:stretch">
+    <div class="st filter-able" id="tpF_all" style="padding:10px 20px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><div style="font-size:13px;font-weight:700;color:var(--tx)">전체</div></div>
+    <div class="st filter-able" id="tpF_prog" style="flex:1"><div class="st-l">진행중</div><div class="st-v" style="color:var(--grn)">${inP}</div></div>
+    <div class="st filter-able" id="tpF_rdy" style="flex:1"><div class="st-l">예정/준비</div><div class="st-v" style="color:var(--yel)">${rdy}</div></div>
+    <div class="st filter-able" id="tpF_imp" style="flex:1"><div class="st-l">🔥 중요</div><div class="st-v" style="color:var(--fire)">${imp}</div></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <span id="tpCatW"></span><span id="tpPerW"></span>
+    <input type="text" class="si" id="tpS" placeholder="업무·구분 검색..." style="flex:1;min-width:160px">
+    <span id="tpCnt" style="font-size:11px;color:var(--tx2)"></span>
+  </div>
+  <div class="cd"><div class="tw2"><table>
+    <thead><tr><th>구분</th><th>매체/대상</th><th>내용</th><th>중요도</th><th>종료일</th><th>담당자</th><th>상태</th><th>비고</th></tr></thead>
+    <tbody id="tpB"></tbody></table></div></div>`;
+  let getCats,getPers;
+  function render(){
+    const cf=getCats(),pf=getPers(),s=document.getElementById('tpS').value;
+    let d=prog;
+    if(statusFilter==='prog')d=d.filter(t=>t.status&&t.status.includes('진행'));
+    else if(statusFilter==='rdy')d=d.filter(t=>t.status&&t.status.includes('예정'));
+    else if(statusFilter==='imp')d=d.filter(t=>t.priority&&t.priority.includes('중요'));
+    if(cf)d=d.filter(t=>cf.includes(t.category));
+    if(pf)d=d.filter(t=>pf.includes(t.person));
+    if(s)d=d.filter(t=>[t.content,t.media,t.note,t.category].some(v=>(v||'').toLowerCase().includes(s.toLowerCase())));
+    document.getElementById('tpCnt').textContent=d.length+'건';
+    document.getElementById('tpB').innerHTML=d.map(t=>`<tr>
+      <td>${catBd(t.category||'')}</td>
+      <td style="font-weight:600">${e(t.media)||'-'}</td><td>${e(t.content)||''}</td><td>${prB(t.priority)}</td>
+      <td style="font-size:11px;color:var(--tx2);white-space:nowrap">${fD(t.deadline)}</td>
+      <td style="font-weight:600">${e(t.person)||''}</td><td>${stB(t.status)}</td>
+      <td style="font-size:11px;color:var(--tx2);max-width:180px">${e(t.note)||''}</td></tr>`).join('')
+      ||'<tr><td colspan="8" style="text-align:center;color:var(--tx2);padding:20px">검색 결과 없음</td></tr>';
+    // 필터박스 활성화 표시
+    ['all','prog','rdy','imp'].forEach(f=>{
+      const el2=document.getElementById('tpF_'+f);
+      if(el2)el2.classList.toggle('filter-on',f==='all'?statusFilter===null:statusFilter===f);
+    });
+  }
+  getCats=makeMultiDrop('tpCatW','구분',cats,render);
+  getPers=makeMultiDrop('tpPerW','담당자',persons,render);
+  // 상태박스 클릭 필터 (all=전체보기, prog/rdy/imp=필터)
+  ['all','prog','rdy','imp'].forEach(f=>{
+    const btn=document.getElementById('tpF_'+f);
+    if(btn)btn.addEventListener('click',()=>{
+      if(f==='all'){statusFilter=null;}
+      else{statusFilter=(statusFilter===f?null:f);}
+      render();
+    });
+  });
+  render();
+  document.getElementById('tpS').addEventListener('input',render);
+})();
+
+// ===== ✅ 업무_완료 =====
+(function(){
+  const el=document.getElementById('p-taskDone'), done=D.tasks_done||[];
+  // 업무_진행 탭과 동일한 카테고리 순서
+  const CAT_ORDER=['취재응대','보도자료','언론미팅','포럼/행사','기획기사','이슈대응','촬영','제작/업로드','고객사미팅','콘텐츠미팅','내부보고','기타','휴가/교육'];
+  const existCats=[...new Set(done.map(t=>t.category).filter(Boolean))];
+  const cats=['전체',...CAT_ORDER.filter(c=>existCats.includes(c)),...existCats.filter(c=>!CAT_ORDER.includes(c))];
+  // 업무_진행 탭과 동일한 담당자 목록 (전체 합산)
+  const allPersons=[...new Set([...(D.tasks_progress||[]),...done].map(t=>t.person).filter(Boolean))];
+  const persons=['전체',...allPersons];
+  const NOTE_MAX=80; // 비고 최대 표시 길이
+
+  function catBd(cat){
+    const G1=['취재응대','보도자료','언론미팅','포럼/행사','기획기사','이슈대응'];
+    const G2=['촬영','제작/업로드','고객사미팅','콘텐츠미팅'];
+    if(G1.includes(cat))return`<span class="bd bd-cat1">${e(cat)}</span>`;
+    if(G2.includes(cat))return`<span class="bd bd-cat2">${e(cat)}</span>`;
+    return`<span class="bd bd-cat3">${e(cat)}</span>`;
+  }
+  function noteCell(note,uid){
+    if(!note||note.length<=NOTE_MAX)return`<span>${e(note)||''}</span>`;
+    return`<span id="nt_${uid}_s">${e(note.substring(0,NOTE_MAX))}… <button class="more-btn" onclick="document.getElementById('nt_${uid}_s').style.display='none';document.getElementById('nt_${uid}_f').style.display='inline'">더보기</button></span><span id="nt_${uid}_f" style="display:none">${e(note)} <button class="more-btn" onclick="document.getElementById('nt_${uid}_f').style.display='none';document.getElementById('nt_${uid}_s').style.display='inline'">접기</button></span>`;
+  }
+
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <span id="tdCatW"></span><span id="tdPerW"></span>
+    <input type="text" class="si" id="tdS" placeholder="업무·구분 검색..." style="flex:1;min-width:160px">
+    <span id="tdCnt" style="font-size:11px;color:var(--tx2)"></span>
+  </div>
+  <div class="cd"><div class="tw2"><table style="table-layout:fixed">
+    <thead><tr><th style="width:70px">구분</th><th style="width:90px">매체/대상</th><th style="width:auto">내용</th><th style="width:55px">중요도</th><th style="width:75px">종료일</th><th style="width:55px">담당자</th><th style="width:32%">비고</th></tr></thead>
+    <tbody id="tdB"></tbody></table></div></div>`;
+  let getCats,getPers;
+  function render(){
+    const cf=getCats(),pf=getPers(),s=document.getElementById('tdS').value;
+    let d=done;
+    if(cf)d=d.filter(t=>cf.includes(t.category));
+    if(pf)d=d.filter(t=>pf.includes(t.person));
+    if(s)d=d.filter(t=>[t.content,t.media,t.note,t.category].some(v=>(v||'').toLowerCase().includes(s.toLowerCase())));
+    // 종료일 기준 내림차순 (최근 일자 상단)
+    d=[...d].sort((a,b)=>{
+      const da=a.deadline?String(a.deadline).replace(/[^0-9]/g,''):'0';
+      const db=b.deadline?String(b.deadline).replace(/[^0-9]/g,''):'0';
+      return db.localeCompare(da);
+    });
+    document.getElementById('tdCnt').textContent=d.length+'건';
+    document.getElementById('tdB').innerHTML=d.map((t,idx)=>`<tr>
+      <td>${catBd(t.category||'')}</td>
+      <td style="font-weight:600">${e(t.media)||'-'}</td><td>${e(t.content)||''}</td><td>${prB(t.priority)}</td>
+      <td style="font-size:11px;color:var(--tx2);white-space:nowrap">${fD(t.deadline)}</td>
+      <td style="font-weight:600">${e(t.person)||''}</td>
+      <td style="font-size:11px;color:var(--tx);line-height:1.5">${noteCell(t.note,'td'+idx)}</td></tr>`).join('')
+      ||'<tr><td colspan="7" style="text-align:center;color:var(--tx2);padding:20px">검색 결과 없음</td></tr>';
+  }
+  getCats=makeMultiDrop('tdCatW','구분',cats,render);
+  getPers=makeMultiDrop('tdPerW','담당자',persons,render);
+  render();
+  document.getElementById('tdS').addEventListener('input',render);
+})();
+
+// ===== 📊 외근현황 =====
+(function(){
+  const el=document.getElementById('p-outing'), o=D.outing||{};
+  const mb=o.members||[], sl=o.timeSlots||[];
+
+  function bgStyle(hex){
+    if(!hex)return '';
+    var h=String(hex).replace('#','');
+    if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    if(h.length!==6)return '';
+    var r=parseInt(h.substring(0,2),16),g=parseInt(h.substring(2,4),16),b=parseInt(h.substring(4,6),16);
+    if(isNaN(r)||isNaN(g)||isNaN(b))return '';
+    return 'background:rgba('+r+','+g+','+b+',.35)';
+  }
+  // 시간 표시: 00분 형식 유지 (08:00 → 8:00, 종료시 "-")
+  function fmtT(t){if(!t)return'';var s=String(t).trim();if(s==='-')return'-';return s.replace(/^0/,'');}
+  // 당일 날짜 표시 (항상 오늘 날짜)
+  function todayStr(){
+    var d=new Date(),dow=['일','월','화','수','목','금','토'];
+    return (d.getMonth()+1)+'월 '+d.getDate()+'일 ('+dow[d.getDay()]+')';
+  }
+  const FALLBACK='background:rgba(255,165,0,.22)';
+  const PERSON_W='180px';
+
+  el.innerHTML=`<div class="cd"><div class="cd-h">📊 외근현황 — ${todayStr()}</div><div class="tw2"><table style="table-layout:fixed">
+    <thead>
+      <tr><th style="width:120px">시간</th>${mb.map(m=>`<th colspan="2" style="text-align:center;font-size:13px;font-weight:700;color:var(--ac);padding:10px;width:${PERSON_W}">${e(m)}</th>`).join('')}</tr>
+      <tr><th></th>${mb.map(()=>`<th style="text-align:center;width:120px">일정</th><th style="text-align:center;width:80px">장소</th>`).join('')}</tr>
+    </thead>
+    <tbody>${sl.map(s=>`<tr><td style="font-weight:600;white-space:nowrap;font-size:12px;text-align:center">${fmtT(s.from)} ~ ${fmtT(s.to)}</td>
+      ${[0,1,2,3].map(i=>{
+        const sch=s['person'+i+'_schedule'], pl=s['person'+i+'_place'], bg=s['person'+i+'_bg'];
+        const hasData=sch||pl;
+        const bgS=bg?bgStyle(bg):(hasData?FALLBACK:'');
+        const schStyle='text-align:center;word-break:keep-all;word-wrap:break-word;'+(bgS?(bgS+';font-weight:600'):'');
+        const plStyle='text-align:center;word-break:keep-all;word-wrap:break-word;'+(bgS?bgS:'color:var(--tx2)');
+        return `<td style="${schStyle}">${e(sch)||''}</td><td style="${plStyle}">${e(pl)||''}</td>`;
+      }).join('')}</tr>`).join('')}
+    </tbody></table></div></div>`;
+})();
+
+// ===== 📅 일정_업로드 =====
+(function(){
+  const el=document.getElementById('p-schedUp'), ev=D.schedule_events||[];
+  const curM=now.getMonth()+1;
+  const months=[...new Set(ev.map(x=>{const m=x.month;return m?parseInt(m):null}).filter(Boolean))].sort((a,b)=>a-b);
+  if(!months.includes(curM)&&months.length) months.push(curM);
+  months.sort((a,b)=>a-b);
+
+  // 날짜 기반 완료/예정 판별: 이벤트 날짜가 오늘 이전이면 완료, 이후면 예정
+  function isDone(month, day){
+    const y=2026, evDate=new Date(y, month-1, parseInt(day));
+    const todayDate=new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return evDate < todayDate;
+  }
+
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <select id="suMo" style="${SST};min-width:90px">${months.map(m=>`<option value="${m}"${m===curM?' selected':''}>${m}월</option>`).join('')}</select>
+    <span style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2)">
+        <span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:rgba(91,141,249,.18);border-left:2px solid var(--ac)"></span>[PR] 예정</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2)">
+        <span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:rgba(91,141,249,.07);border-left:2px solid rgba(91,141,249,.3)"></span>[PR] 완료</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2)">
+        <span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:rgba(244,114,182,.18);border-left:2px solid var(--pink)"></span>[SNS] 예정</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2)">
+        <span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:rgba(244,114,182,.07);border-left:2px solid rgba(244,114,182,.3)"></span>[SNS] 완료</span>
+    </span>
+  </div>
+  <div id="suCal"></div>`;
+
+  function render(){
+    const mo=+document.getElementById('suMo').value;
+    const moEv=ev.filter(x=>parseInt(x.month)===mo);
+    const fd=new Date(2026,mo-1,1).getDay(),dim=new Date(2026,mo,0).getDate();
+    const td=now.getDate(),tm=now.getMonth()+1;
+    const eMap={};
+    moEv.forEach(x=>{const d=parseInt(x.day);if(!isNaN(d)){if(!eMap[d])eMap[d]=[];eMap[d].push({day:d,content:x.content,done:isDone(mo,d)})}});
+    let g=['일','월','화','수','목','금','토'].map(d=>`<div class="cal-h">${d}</div>`).join('');
+    for(let i=0;i<fd;i++)g+='<div class="cal-c empty"></div>';
+    for(let d=1;d<=dim;d++){
+      const isT=d===td&&mo===tm,evts=eMap[d]||[];
+      g+=`<div class="cal-c${isT?' today':''}"><div class="cal-dt" style="font-size:13px">${d}</div>${evts.map(c=>{
+        const isPR=c.content.includes('[PR]');
+        const done=c.done;
+        const label=c.content.replace('[PR] ','').replace('[SNS] ','');
+        if(done){
+          // 완료: 체크 아이콘 + 흐린 배경, 텍스트 색 유지하되 투명도 낮춤
+          const doneStyle=isPR
+            ?'background:rgba(91,141,249,.07);color:rgba(91,141,249,.45);border-left:2px solid rgba(91,141,249,.3)'
+            :'background:rgba(244,114,182,.07);color:rgba(244,114,182,.4);border-left:2px solid rgba(244,114,182,.3)';
+          return '<div class="cal-ev" style="font-size:10px;padding:2px 4px;'+doneStyle+'">&#10003; '+label+'</div>';
+        }else{
+          // 예정: 밝은 색상 강조
+          const schedStyle=isPR
+            ?'background:rgba(91,141,249,.18);color:var(--ac);font-weight:600;border-left:2px solid var(--ac)'
+            :'background:rgba(244,114,182,.18);color:var(--pink);font-weight:600;border-left:2px solid var(--pink)';
+          return '<div class="cal-ev" style="font-size:11px;padding:2px 4px;'+schedStyle+'">'+label+'</div>';
+        }
+      }).join('')}</div>`;
+    }
+    document.getElementById('suCal').innerHTML=`<div class="cd"><div class="cd-h">📅 ${mo}월 일정 (${moEv.length}건)</div><div class="cd-b"><div class="cal-g">${g}</div></div></div>`;
+  }
+  render();
+  document.getElementById('suMo').addEventListener('change',render);
+})();
+
+// ===== 📅 일정_팀 =====
+(function(){
+  const el=document.getElementById('p-schedTeam'), ev=D.team_cal||[];
+  const curM=now.getMonth()+1;
+  const months=[...new Set(ev.map(x=>{const m=String(x.date).match(/(\d{4})[-\/](\d{1,2})[-\/]/);return m?+m[2]:null}).filter(Boolean))].sort((a,b)=>a-b);
+  if(!months.includes(curM)&&months.length) months.push(curM);
+  months.sort((a,b)=>a-b);
+
+  // 휴가 데이터 수집: tasks_progress + tasks_done 에서만 파싱 (notices 연동 삭제)
+  function getVacations(){
+    const vacs=[];
+    const y=2026;
+    // 업무_진행 + 업무_완료 탭에서 휴가/교육 카테고리 항목
+    const allTasks=[...(D.tasks_progress||[]),...(D.tasks_done||[])];
+    allTasks.forEach(t=>{
+      if(!t.category||!t.category.includes('휴가'))return;
+      const person=(t.person||'').replace('팀','').trim();
+      if(!person)return;
+      // deadline에서 날짜 파싱
+      const dl=String(t.deadline||'');
+      const dm=dl.match(/(\d{4})[-.]\s*(\d{1,2})[-.]\s*(\d{1,2})/);
+      if(dm){
+        const sm=+dm[2],sd=+dm[3];
+        // 범위 표기 (예: "4/2 - 4/6") 포함 여부
+        const range=dl.match(/(\d{1,2})\/(\d{1,2})\s*[-~]\s*(\d{1,2})\/(\d{1,2})/);
+        if(range) vacs.push({name:person,sm:+range[1],sd:+range[2],em:+range[3],ed:+range[4]});
+        else vacs.push({name:person,sm,sd,em:sm,ed:sd});
+      }
+      // note에서 날짜 범위 파싱 (예: "이성웅 4/2 - 4/6")
+      const note=String(t.note||'');
+      const nm=note.match(/([가-힣]+)\s*(\d{1,2})\/(\d{1,2})\s*[-~]\s*(\d{1,2})\/(\d{1,2})/);
+      if(nm) vacs.push({name:nm[1],sm:+nm[2],sd:+nm[3],em:+nm[4],ed:+nm[5]});
+    });
+    return vacs;
+  }
+
+  // 포럼/행사 이벤트 판별
+  function getForumEvents(mo){
+    const fMap={};
+    const tasks=[...(D.tasks_progress||[]),...(D.tasks_done||[])];
+    tasks.forEach(t=>{
+      if(!t.category||!t.category.includes('포럼'))return;
+      const dl=String(t.deadline||'');
+      const dm=dl.match(/(\d{4})[-.]\s*(\d{1,2})[-.]\s*(\d{1,2})/);
+      if(dm&&+dm[2]===mo){
+        const d=+dm[3];
+        if(!fMap[d])fMap[d]=[];
+        const label=(t.media&&t.media!=='미정'?t.media:'')||(t.content||'').substring(0,10);
+        fMap[d].push({label:label,person:t.person||''});
+      }
+    });
+    return fMap;
+  }
+
+  // 업무미팅 이벤트 (언론미팅, 고객사미팅, 콘텐츠미팅, 취재응대)
+  function getMeetingEvents(mo){
+    const mMap={};
+    const meetCats=['언론미팅','고객사미팅','콘텐츠미팅','취재응대'];
+    const tasks=[...(D.tasks_progress||[]),...(D.tasks_done||[])];
+    tasks.forEach(t=>{
+      if(!t.category||!meetCats.includes(t.category))return;
+      const dl=String(t.deadline||'');
+      const dm=dl.match(/(\d{4})[-.]\s*(\d{1,2})[-.]\s*(\d{1,2})/);
+      if(dm&&+dm[2]===mo){
+        const d=+dm[3];
+        if(!mMap[d])mMap[d]=[];
+        const label=(t.media&&t.media!=='미정'?t.media:t.content||'').substring(0,10);
+        mMap[d].push({label:label,person:t.person||''});
+      }
+    });
+    return mMap;
+  }
+
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <select id="stMo" style="${SST};min-width:90px">${months.map(m=>`<option value="${m}"${m===curM?' selected':''}>${m}월</option>`).join('')}</select>
+    <span style="display:flex;gap:8px;flex-wrap:wrap;margin-left:4px">
+      <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--tx2)"><span style="width:8px;height:8px;border-radius:2px;background:var(--ac);display:inline-block"></span>업무미팅</span>
+      <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--tx2)"><span style="width:8px;height:8px;border-radius:2px;background:var(--yel);display:inline-block"></span>포럼/행사</span>
+      <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--tx2)"><span style="width:8px;height:8px;border-radius:2px;background:rgba(148,163,184,.5);display:inline-block"></span>휴가</span>
+    </span>
+  </div>
+  <div id="stCal"></div>`;
+
+  function render(){
+    const mo=+document.getElementById('stMo').value;
+    const fd=new Date(2026,mo-1,1).getDay(),dim=new Date(2026,mo,0).getDate();
+    const td=now.getDate(),tm=now.getMonth()+1;
+    const eMap={};
+    ev.forEach(x=>{const m=String(x.date).match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);if(m&&+m[2]===mo){const d=+m[3];if(!eMap[d])eMap[d]=[];eMap[d].push({type:'team',text:x.events})}});
+
+    // 휴가 이벤트 주입
+    const vacs=getVacations();
+    vacs.forEach(v=>{
+      let startD=null,endD=null;
+      if(v.sm===mo&&v.em===mo){startD=v.sd;endD=v.ed}
+      else if(v.sm===mo){startD=v.sd;endD=dim}
+      else if(v.em===mo){startD=1;endD=v.ed}
+      else if(v.sm<mo&&v.em>mo){startD=1;endD=dim}
+      if(startD!==null){
+        for(let d=startD;d<=endD;d++){
+          if(!eMap[d])eMap[d]=[];
+          eMap[d].push({type:'vacation',text:v.name+' 휴가'});
+        }
+      }
+    });
+
+    // 포럼/행사 이벤트 주입
+    const forumMap=getForumEvents(mo);
+    Object.keys(forumMap).forEach(d=>{
+      const di=+d;
+      if(!eMap[di])eMap[di]=[];
+      forumMap[di].forEach(ev=>eMap[di].push({type:'forum',text:ev.label+(ev.person?'('+ev.person+')':'')}));
+    });
+
+    // 업무미팅 이벤트 주입
+    const meetMap=getMeetingEvents(mo);
+    Object.keys(meetMap).forEach(d=>{
+      const di=+d;
+      if(!eMap[di])eMap[di]=[];
+      meetMap[di].forEach(ev=>eMap[di].push({type:'meeting',text:ev.label+(ev.person?'('+ev.person+')':'')}));
+    });
+
+    let g=['일','월','화','수','목','금','토'].map(d=>`<div class="cal-h">${d}</div>`).join('');
+    for(let i=0;i<fd;i++)g+='<div class="cal-c empty"></div>';
+    for(let d=1;d<=dim;d++){
+      const isT=d===td&&mo===tm,evts=eMap[d]||[];
+      let evHtml=evts.map(ev=>{
+        if(ev.type==='vacation') return`<div class="cal-ev vac" style="font-size:10px">${e(ev.text)}</div>`;
+        if(ev.type==='forum') return`<div class="cal-ev forum" style="font-size:10px">${e(ev.text)}</div>`;
+        if(ev.type==='meeting') return`<div class="cal-ev biz-meeting" style="font-size:10px">${e(ev.text)}</div>`;
+        // team_cal 이벤트 (🔹 prefix)
+        return ev.text.split('\n').map(l=>`<div class="cal-ev biz-meeting" style="font-size:10px">${e(l.replace('🔹',''))}</div>`).join('');
+      }).join('');
+      g+=`<div class="cal-c${isT?' today':''}"><div class="cal-dt" style="font-size:12px">${d}</div>${evHtml}</div>`;
+    }
+    document.getElementById('stCal').innerHTML=`<div class="cd"><div class="cd-h">📅 4월 일정</div><div class="cd-b"><div class="cal-g">${g}</div></div></div>`;
+  }
+  render();
+  document.getElementById('stMo').addEventListener('change',render);
+})();
+
+// ===== 📒 미디어클리핑 =====
+(function(){
+  const el=document.getElementById('p-clip'), cl=D.clipping||[];
+  const kws=[...new Set(cl.map(x=>x.keyword).filter(Boolean))];
+  const medias=[...new Set(cl.map(x=>x.media).filter(Boolean))].sort();
+  const parseD=d=>{const m=String(d).match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);return m?{y:+m[1],m:+m[2],d:+m[3]}:null};
+  const months=[...new Set(cl.map(x=>{const p=parseD(x.date);return p?p.m:null}).filter(Boolean))].sort((a,b)=>a-b);
+
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <span id="clMoW"></span>
+    <span id="clKwW"></span>
+    <span id="clMdW"></span>
+    <input type="text" class="si" id="clS" placeholder="기사 제목 검색..." style="flex:1;min-width:160px">
+    <span id="clCnt" style="font-size:11px;color:var(--tx2);white-space:nowrap"></span>
+  </div>
+  <div class="cd"><div class="tw2"><table style="table-layout:fixed">
+    <thead><tr><th style="width:80px">수집일</th><th style="width:70px">키워드</th><th style="width:90px">언론사</th><th>기사 제목</th><th style="width:40px">링크</th></tr></thead>
+    <tbody id="clB"></tbody></table></div></div>`;
+
+  let getMonths,getKws,getMds;
+  function render(){
+    const mf=getMonths(),kf=getKws(),mdf=getMds();
+    const s=document.getElementById('clS').value;
+    let d=cl;
+    if(mf)d=d.filter(x=>{const p=parseD(x.date);return p&&mf.includes(p.m)});
+    if(kf)d=d.filter(x=>kf.includes(x.keyword));
+    if(mdf)d=d.filter(x=>mdf.includes(x.media));
+    if(s)d=d.filter(x=>[x.title,x.media].some(v=>(v||'').toLowerCase().includes(s.toLowerCase())));
+    document.getElementById('clCnt').textContent=d.length+'건';
+    document.getElementById('clB').innerHTML=d.map(x=>`<tr>
+      <td style="font-size:10px;white-space:nowrap">${fD(x.date)}</td>
+      <td>${x.keyword?bd('k',e(x.keyword)):''}</td>
+      <td style="font-weight:600;font-size:11px">${e(x.media)}</td>
+      <td style="font-size:11px;overflow:hidden;text-overflow:ellipsis">${e(x.title)}</td>
+      <td>${x.link?`<a class="lnk" href="${x.link}" target="_blank">🔗</a>`:''}</td></tr>`).join('')
+      ||'<tr><td colspan="5" style="text-align:center;color:var(--tx2);padding:20px">검색 결과 없음</td></tr>';
+  }
+  getMonths=makeMultiDrop('clMoW','월',['전체',...months.map(m=>m)],()=>{render()},true); // 월은 숫자라 특수처리
+  // 월 드롭다운 재정의 (숫자 + "월" 표시용)
+  (function(){
+    const wrap=document.getElementById('clMoW');
+    const items=['전체',...months];
+    wrap.innerHTML=`<div style="position:relative;display:inline-block" id="clMoW_w">
+      <button style="${SST};min-width:90px;text-align:left" id="clMoW_btn">월 전체</button>
+      <div id="clMoW_dd" style="display:none;position:absolute;top:100%;left:0;margin-top:4px;background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:6px;z-index:50;min-width:120px;max-height:200px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.4)"></div>
+    </div>`;
+    const btn=document.getElementById('clMoW_btn'),dd=document.getElementById('clMoW_dd');
+    const sel=new Set();
+    function drawDD(){
+      dd.innerHTML=items.map(it=>{
+        const lbl=it==='전체'?'전체':it+'월';
+        const chk=it==='전체'?(sel.size===0?'checked':''):(sel.has(it)?'checked':'');
+        return`<label style="display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:4px;cursor:pointer;font-size:12px;color:var(--tx);transition:.15s" onmouseover="this.style.background='var(--sf2)'" onmouseout="this.style.background='transparent'">
+          <input type="checkbox" ${chk} data-v="${it}" style="accent-color:var(--ac);cursor:pointer"> ${lbl}
+        </label>`;
+      }).join('');
+      dd.querySelectorAll('input').forEach(cb=>{
+        cb.onchange=()=>{const v=cb.dataset.v==='전체'?null:+cb.dataset.v;if(!v){sel.clear();}else{if(sel.has(v))sel.delete(v);else sel.add(v);}drawDD();updateBtn();render();};
+      });
+    }
+    function updateBtn(){if(sel.size===0)btn.textContent='월 전체';else if(sel.size===1)btn.textContent=[...sel][0]+'월';else btn.textContent='월 '+sel.size+'개';}
+    btn.onclick=(ev)=>{ev.stopPropagation();dd.style.display=dd.style.display==='none'?'block':'none';drawDD();};
+    document.addEventListener('click',ev=>{if(!wrap.contains(ev.target))dd.style.display='none';});
+    getMonths=()=>sel.size===0?null:[...sel];
+  })();
+  getKws=makeMultiDrop('clKwW','키워드',['전체',...kws],render);
+  getMds=makeMultiDrop('clMdW','언론사',['전체',...medias],render);
+  render();
+  document.getElementById('clS').addEventListener('input',render);
+})();
+// ===== 💰 예산현황 =====
+(function(){
+  const el=document.getElementById('p-budget'), rows=D.budget_rows||D.budget_detail||[];
+  const total=rows.find(r=>r.isTotal);
+  const tA=total?parseFloat(total.a26)||0:0, tS=total?parseFloat(total.s26)||0:0;
+  const rate=tA>0?(tS/tA*100).toFixed(1):0;
+  const fN=v=>{if(v===null||v===undefined)return'-';const n=parseFloat(v);return isNaN(n)?'-':n.toLocaleString(undefined,{maximumFractionDigits:2})};
+  const fR=v=>{if(v===null||v===undefined)return'-';const n=parseFloat(v);return isNaN(n)?'-':(n*100).toFixed(1)+'%'};
+
+  let tbody='';
+  rows.forEach(r=>{
+    if(r.isTotal){
+      tbody+=`<tr style="font-weight:800;background:rgba(91,141,249,.08);border-top:2px solid var(--ac)">
+        <td colspan="2" style="font-size:13px;color:var(--ac)">합계</td>
+        <td class="amt" style="color:var(--ac)">${fN(r.a26)}</td><td class="amt" style="color:var(--tx2)">${fN(r.a25)}</td>
+        <td class="amt" style="color:var(--ac)">${fN(r.s26)}</td><td style="color:var(--ac)">${fR(r.rate)}</td>
+        <td class="amt" style="color:var(--tx2)">${fN(r.s25)}</td></tr>`;
+    } else if(r.isSub){
+      tbody+=`<tr style="font-weight:700;background:var(--sf2);border-top:1px solid var(--bd)">
+        <td colspan="2" style="font-size:12px;color:var(--yel)">${e(r.type)}</td>
+        <td class="amt" style="font-weight:700">${fN(r.a26)}</td><td class="amt" style="color:var(--tx2)">${fN(r.a25)}</td>
+        <td class="amt" style="font-weight:700">${fN(r.s26)}</td><td style="font-weight:700">${fR(r.rate)}</td>
+        <td class="amt" style="color:var(--tx2)">${fN(r.s25)}</td></tr>`;
+    } else if(r.isSingle){
+      tbody+=`<tr style="background:rgba(167,139,250,.04)">
+        <td style="font-weight:600;font-size:11px;color:var(--pur)">${e(r.type)}</td><td style="font-weight:600">${e(r.name)||''}</td>
+        <td class="amt">${fN(r.a26)}</td><td class="amt" style="color:var(--tx2)">${fN(r.a25)}</td>
+        <td class="amt">${fN(r.s26)}</td><td>${fR(r.rate)}</td>
+        <td class="amt" style="color:var(--tx2)">${fN(r.s25)}</td></tr>`;
+    } else {
+      tbody+=`<tr>
+        <td style="font-size:10px;color:var(--tx2)">${e(r.type)}</td><td style="font-weight:600">${e(r.name)||''}</td>
+        <td class="amt">${fN(r.a26)}</td><td class="amt" style="color:var(--tx2)">${fN(r.a25)}</td>
+        <td class="amt">${fN(r.s26)}</td><td>${fR(r.rate)}</td>
+        <td class="amt" style="color:var(--tx2)">${fN(r.s25)}</td></tr>`;
+    }
+  });
+
+  el.innerHTML=`<div class="g3">
+    <div class="st"><div class="st-l">'26 연간 예산</div><div class="st-v" style="color:var(--ac)">${tA.toLocaleString()}</div><div class="st-s">백만원</div></div>
+    <div class="st"><div class="st-l">'26 집행 누계</div><div class="st-v" style="color:var(--grn)">${tS.toLocaleString(undefined,{maximumFractionDigits:1})}</div><div class="st-s">집행률 ${rate}%</div></div>
+    <div class="st"><div class="st-l">잔여 예산</div><div class="st-v" style="color:var(--yel)">${(tA-tS).toLocaleString(undefined,{maximumFractionDigits:1})}</div><div class="st-s">백만원</div></div>
+  </div>
+  <div class="cd" style="margin-top:14px"><div class="cd-h">매체별 연간 예산 현황 (단위: 백만원)</div><div class="tw2"><table>
+    <thead><tr><th>구분</th><th>매체명</th><th class="amt">'26 연간</th><th class="amt">'25 연간</th><th class="amt">'26 집행(누계)</th><th style="width:80px">집행률</th><th class="amt">'25 집행(누계)</th></tr></thead>
+    <tbody>${tbody}</tbody></table></div></div>`;
+})();
+
+// ===== 💰 당월현황 =====
+(function(){
+  const el=document.getElementById('p-monthly'), mon=D.monthly||[];
+  const tot=mon.find(m=>m.media==='합계'), rows=mon.filter(m=>m.media!=='합계');
+  let mT=0;rows.forEach(m=>{mT+=parseFloat(m.v2)||0});
+  el.innerHTML=`<div class="g3">
+    <div class="st"><div class="st-l">당월 집행 합계</div><div class="st-v" style="color:var(--ac)">${fA(tot?.v2||mT)}</div><div class="st-s">만원</div></div>
+    <div class="st"><div class="st-l">'26 누계</div><div class="st-v" style="color:var(--grn)">${fA(tot?.cumulative26)}</div><div class="st-s">만원</div></div>
+    <div class="st"><div class="st-l">매체 수</div><div class="st-v" style="color:var(--yel)">${rows.filter(r=>r.v2&&r.v2!=='-'&&parseFloat(r.v2)>0).length}</div><div class="st-s">집행 매체</div></div>
+  </div>
+  <div class="cd" style="margin-top:14px"><div class="cd-h">당월 매체별 현황 (만원)</div><div class="tw2"><table>
+    <thead><tr><th>매체</th><th class="amt">공문수신</th><th class="amt">v1</th><th class="amt">확정</th><th>비고</th><th class="amt">'26누계</th><th class="amt">'25당월</th><th class="amt">'25연간</th></tr></thead>
+    <tbody>${rows.map(m=>`<tr>
+      <td style="font-weight:600">${e(m.media)}${m.sub?` <span style="font-size:9px;color:var(--tx2)">${e(m.sub)}</span>`:''}</td>
+      <td class="amt">${fA(m.received)}</td><td class="amt" style="color:var(--tx2)">${fA(m.v1)}</td><td class="amt">${fA(m.v2)}</td>
+      <td style="font-size:10px;color:var(--tx2);max-width:160px">${e(m.note)||''}</td>
+      <td class="amt">${fA(m.cumulative26)}</td><td class="amt" style="color:var(--tx2)">${fA(m.monthly25)}</td>
+      <td class="amt" style="color:var(--tx2)">${fA(m.annual25)}</td></tr>`).join('')}
+    ${tot?`<tr style="font-weight:700;background:var(--sf2)"><td>합계</td><td class="amt">${fA(tot.received)}</td><td class="amt">${fA(tot.v1)}</td><td class="amt">${fA(tot.v2)}</td><td></td><td class="amt">${fA(tot.cumulative26)}</td><td class="amt">${fA(tot.monthly25)}</td><td class="amt">${fA(tot.annual25)}</td></tr>`:''}
+    </tbody></table></div></div>`;
+})();
+
+// ===== 📰 홍보현황 =====
+(function(){
+  const el=document.getElementById('p-pr'), pr=D.pr_list||[];
+  const months=[...new Set(pr.map(p=>p.month).filter(Boolean))];
+  el.innerHTML=`<div class="g3" style="margin-bottom:14px">
+    <div class="st"><div class="st-l">총 홍보</div><div class="st-v" style="color:var(--ac)">${pr.length}</div></div>
+    <div class="st"><div class="st-l">기업</div><div class="st-v" style="color:var(--grn)">${pr.filter(p=>(p.type||'').includes('기업')).length}</div></div>
+    <div class="st"><div class="st-l">화장품/건기식</div><div class="st-v" style="color:var(--pur)">${pr.filter(p=>(p.type||'').includes('화장품')||(p.type||'').includes('건기식')).length}</div></div>
+  </div>
+  <div class="fb" id="prF"></div>
+  <div class="cd"><div class="tw2"><table><thead><tr><th>월</th><th>유형</th><th style="width:65px">일자</th><th>내용</th><th>매체</th><th>링크</th></tr></thead>
+  <tbody id="prB"></tbody></table></div></div>`;
+  let pf='전체';
+  function render(f){
+    const fb=document.getElementById('prF');fb.innerHTML='';
+    ['전체',...months].forEach(m=>{const b=document.createElement('button');b.className='fbtn'+(m===f?' on':'');b.textContent=m;b.onclick=()=>{pf=m;render(m)};fb.appendChild(b)});
+    let d=pr;if(f!=='전체')d=d.filter(p=>p.month===f);
+    document.getElementById('prB').innerHTML=d.map(p=>`<tr>
+      <td>${bd('n',e(p.month)||'')}</td><td>${bd(p.type&&p.type.includes('기업')?'p':'d',e(p.type)||'')}</td>
+      <td style="white-space:nowrap;font-size:11px">${fD(p.date)}</td><td style="font-size:11px">${e(p.content)}</td>
+      <td style="font-weight:600;font-size:11px">${e(p.media)||''}</td>
+      <td>${p.link?`<a class="lnk" href="${p.link}" target="_blank">🔗</a>`:''}</td></tr>`).join('');
+  }
+  render('전체');
+})();
+
+// ===== 📦 유어로고 =====
+(function(){
+  const el=document.getElementById('p-logo'), yl=D.yourlogo||{};
+  const prods=yl.products||[], stock=yl.stock||[], usage=yl.usage||[];
+  const colors=['var(--ac)','var(--pur)','var(--grn)','var(--pink)','var(--cyan)','var(--yel)'];
+  el.innerHTML=`<div class="cd"><div class="cd-h">📦 재고 현황</div><div class="cd-b">
+    <div style="display:grid;grid-template-columns:repeat(${Math.min(prods.length,6)},1fr);gap:10px">
+      ${prods.map((p,i)=>`<div class="st" style="text-align:center"><div class="st-l">${e(p)}</div><div class="st-v" style="color:${colors[i]};font-size:22px">${stock[i]||0}</div><div class="st-s">개</div></div>`).join('')}
+    </div>
+  </div></div>
+  <div class="cd"><div class="cd-h">반출 내역 (${usage.length}건)</div><div class="tw2"><table>
+    <thead><tr><th>구분</th><th>일자</th>${prods.map(p=>`<th class="amt" style="font-size:9px">${e(p).substring(0,5)}</th>`).join('')}<th>사용처</th></tr></thead>
+    <tbody>${usage.map(u=>`<tr><td>${e(u.type)}</td><td style="white-space:nowrap;font-size:11px">${fD(u.date)}</td>
+      <td class="amt">${u.p1||''}</td><td class="amt">${u.p2||''}</td><td class="amt">${u.p3||''}</td>
+      <td class="amt">${u.p4||''}</td><td class="amt">${u.p5||''}</td><td class="amt">${u.p6||''}</td>
+      <td style="font-size:11px">${e(u.note)||''}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+})();
+
+// ===== 📒 전사일정 =====
+(function(){
+  const el=document.getElementById('p-comCal'), cc=D.company_cal||[];
+  const curM=now.getMonth()+1;
+  const months=[...new Set(cc.map(x=>{const m=x.month;return m?parseInt(m):null}).filter(Boolean))].sort((a,b)=>a-b);
+  if(!months.includes(curM)&&months.length) months.push(curM);
+  months.sort((a,b)=>a-b);
+
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+    <select id="ccMo" style="${SST};min-width:90px">${months.map(m=>`<option value="${m}"${m===curM?' selected':''}>${m}월</option>`).join('')}</select>
+  </div>
+  <div id="ccCal"></div>`;
+
+  function render(){
+    const mo=+document.getElementById('ccMo').value;
+    const moItems=cc.filter(x=>parseInt(x.month)===mo);
+    const y=2026,fd=new Date(y,mo-1,1).getDay(),dim=new Date(y,mo,0).getDate();
+    const eMap={};
+    moItems.forEach(x=>{
+      const mt=String(x.date).match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+      if(mt){const d=+mt[3];if(!eMap[d])eMap[d]=[];eMap[d]=eMap[d].concat(x.events)}
+      else{const n=parseFloat(x.date);if(!isNaN(n)&&n>0&&n<=31){if(!eMap[n])eMap[n]=[];eMap[n]=eMap[n].concat(x.events)}}
+    });
+    let g=['일','월','화','수','목','금','토'].map(d=>`<div class="cal-h">${d}</div>`).join('');
+    for(let i=0;i<fd;i++)g+='<div class="cal-c empty"></div>';
+    for(let d=1;d<=dim;d++){
+      const isT=d===now.getDate()&&mo===now.getMonth()+1;
+      const evts=eMap[d]||[];
+      g+=`<div class="cal-c${isT?' today':''}"><div class="cal-dt">${d}</div>${evts.map(ev=>`<div class="cal-ev pr">${e(ev)}</div>`).join('')}</div>`;
+    }
+    document.getElementById('ccCal').innerHTML=`<div class="cd"><div class="cd-h">📒 전사일정 — ${mo}월</div><div class="cd-b"><div class="cal-g">${g}</div></div></div>`;
+  }
+  render();
+  document.getElementById('ccMo').addEventListener('change',render);
+})();
+
+
+
+// ============================================================
+//  🔄 Google Sheets 실시간 동기화 (Apps Script API)
+//  https://unevie.github.io 에서 CORS 정상 작동
+// ============================================================
+(function(){
+  var API='https://script.google.com/macros/s/AKfycbyiIOFW1zvlpyas5JlTbYZ8lZWormmDvmhF5pyaxmWmXatm_4SFwPyFyM1kR84pdvcn/exec';
+  var AUTO_MS=5*60*1000;
+  var st=document.getElementById('liveS');
+
+  function s(v){return v==null?'':String(v).trim()}
+  function n(v){var x=parseFloat(v);return isNaN(x)?null:x}
+
+  // Find sheet by name keyword - returns values array (handles both old 2D and new {values,backgrounds} format)
+  function findSheet(data,kw){
+    for(var name in data){
+      if(name.indexOf(kw)>=0){
+        var sh=data[name];
+        if(sh&&sh.values)return sh.values;
+        if(Array.isArray(sh))return sh;
+        return null;
+      }
+    }
+    return null;
+  }
+
+  // Find sheet with backgrounds+fontLines - returns {values, backgrounds, fontLines} or null
+  function findSheetRaw(data,kw){
+    for(var name in data){
+      if(name.indexOf(kw)>=0){
+        var sh=data[name];
+        console.log('  📋 findSheetRaw matched "'+name+'" for kw="'+kw+'"');
+        if(sh&&sh.values){
+          console.log('    new format, bgs:',sh.backgrounds?'yes':'no','fontLines:',sh.fontLines?'yes':'no');
+          return {values:sh.values,backgrounds:sh.backgrounds||null,fontLines:sh.fontLines||null};
+        }
+        if(Array.isArray(sh)){
+          console.log('    old format (2D array)');
+          return {values:sh,backgrounds:null,fontLines:null};
+        }
+        return null;
+      }
+    }
+    console.warn('  ⚠️ findSheetRaw NO MATCH for kw="'+kw+'", available:',Object.keys(data));
+    return null;
+  }
+
+  // ---- Parsers (data is 2D array from Apps Script) ----
+  function pToday(rows,fontLines){
+    if(!rows||rows.length<2)return;
+    console.log('📊 TODAY raw rows:',rows.length);
+    // Debug: dump first 35 rows to understand structure
+    for(var dd=0;dd<Math.min(35,rows.length);dd++){
+      var dr=rows[dd];if(!dr)continue;
+      var dump=[];
+      for(var dc=0;dc<Math.min(14,dr.length);dc++)if(s(dr[dc]))dump.push(dc+':'+s(dr[dc]).substring(0,30));
+      if(dump.length)console.log('  r'+dd+': '+dump.join(' | '));
+    }
+
+    var tasks=[],imp=[],notices=[],news=[];
+    var taskMode=false,noticeMode=false,newsMode=false;
+    var cl=null,ci=[];
+
+    // First scan: find section header row indices
+    var taskStart=-1,impStart=-1,noticeStart=-1,artStart=-1,newsStart=-1;
+    for(var i=0;i<rows.length;i++){
+      var r=rows[i];if(!r)continue;
+      var b=s(r[1]),iCol=s(r[8]);
+      if(b.indexOf('TODAY 주요 업무')>=0)taskStart=i;
+      else if(iCol.indexOf('중요 업무')>=0||iCol.indexOf('진행 상황')>=0)impStart=i;
+      else if(b.indexOf('주요 공유사항')>=0)noticeStart=i;
+      else if(iCol.indexOf('기획 기사')>=0||iCol.indexOf('인벤토리')>=0)artStart=i;
+      else if(b.indexOf('TODAY 코스맥스')>=0||b.indexOf('주요 뉴스')>=0)newsStart=i;
+    }
+    console.log('📊 Sections: task='+taskStart+' imp='+impStart+' notice='+noticeStart+' art='+artStart+' news='+newsStart);
+
+    // Parse 주요 업무 일정: B~G columns, starts 2 rows after header (skip "구분" row)
+    if(taskStart>=0){
+      for(var i=taskStart+2;i<Math.min(rows.length,taskStart+15);i++){
+        var r=rows[i];if(!r)continue;
+        var b=s(r[1]);
+        if(!b||b.indexOf('TODAY')>=0||b.indexOf('주요 공유')>=0)break;
+        if(s(r[1])||s(r[2])||s(r[3]))tasks.push({category:b,media:s(r[2]),content:s(r[3]),person:s(r[4]),deadline:s(r[5]),status:s(r[6])});
+      }
+    }
+
+    // Parse 중요 업무: I~N columns - 좌측 주요업무와 같은 행에 배치되어 있음
+    // impStart가 있으면 거기부터, 없으면 taskStart 기준으로 같은 행들을 읽음
+    var impReadStart=impStart>=0?impStart+2:(taskStart>=0?taskStart+2:-1);
+    if(impReadStart>=0){
+      for(var i=impReadStart;i<Math.min(rows.length,impReadStart+15);i++){
+        var r=rows[i];if(!r)continue;
+        var iv=s(r[8]);
+        // Stop when we hit next section
+        if(iv.indexOf('기획 기사')>=0||iv.indexOf('인벤토리')>=0)break;
+        if(s(r[1]).indexOf('주요 공유')>=0)break;
+        // Accept row if any important column has data
+        if(iv&&iv!=='구분'&&(s(r[9])||s(r[10]))){
+          imp.push({category:iv,media:s(r[9]),content:s(r[10]),person:s(r[11]),deadline:s(r[12]),status:s(r[13])});
+        }
+      }
+    }
+
+    // Parse 주요 공유사항: B column, starts 1 row after header
+    if(noticeStart>=0){
+      for(var i=noticeStart+1;i<Math.min(rows.length,noticeStart+20);i++){
+        var r=rows[i];if(!r)continue;
+        var b=s(r[1]);
+        if(b.indexOf('TODAY')>=0)break;
+        if(b.indexOf('[')==0){
+          if(cl)notices.push({label:cl,items:ci.slice()});
+          cl=b.replace(/[\[\]]/g,'');ci=[];
+        }else if(b&&cl){
+          ci.push(b);
+        }
+      }
+      if(cl)notices.push({label:cl,items:ci});
+    }
+
+    // Parse 기획 기사 인벤토리: I=내용, M=전달매체, starts 2 rows after header
+    var articles=[];
+    if(artStart>=0){
+      for(var i=artStart+2;i<Math.min(rows.length,artStart+25);i++){
+        var r=rows[i];if(!r)continue;
+        var content=s(r[8]);
+        if(!content||content.indexOf('TODAY')>=0)break;
+        // fontLines[row][col===8]: 'line-through' → 취소선 = 완료 처리된 항목
+        var fl=fontLines&&fontLines[i]?fontLines[i][8]:'';
+        var strikethrough=(fl==='line-through'||fl==='LINE_THROUGH');
+        // 전달매체: N열(13) 또는 M열(12) 탐색
+        var media=s(r[13])||s(r[12])||'미정';
+        articles.push({content:content,media:media,strikethrough:strikethrough});
+      }
+    }
+
+    // Parse 뉴스: B=언론사, C=제목, D=키워드
+    if(newsStart>=0){
+      for(var i=newsStart+2;i<rows.length;i++){
+        var r=rows[i];if(!r)continue;
+        var b=s(r[1]),c=s(r[2]);
+        if(b&&c)news.push({media:b,title:c,keyword:s(r[3])});
+      }
+    }
+
+    if(tasks.length)D.today_tasks=tasks;
+    if(imp.length)D.today_important=imp;
+    if(notices.length)D.notices=notices;
+    if(news.length)D.today_news=news;
+    if(articles.length)D.articles_inventory=articles;
+    // Also set window._notices for cross-tab access (will be overwritten on reload from D)
+    if(notices.length)window._notices=notices;
+
+    console.log('📊 TODAY parsed: tasks='+tasks.length+' imp='+imp.length+' notices='+notices.length+' articles='+articles.length+' news='+news.length);
+  }
+
+  function pTasks(rows){
+    if(!rows)return[];var items=[];
+    // Find header row (contains "구분" or "매체") to determine actual column offsets
+    var hdrRow=-1, colOff=2; // default: A,B empty, C=구분 means start at col 2
+    for(var i=0;i<Math.min(5,rows.length);i++){
+      var r=rows[i];if(!r)continue;
+      for(var c=0;c<r.length;c++){
+        if(s(r[c])==='구분'){hdrRow=i;colOff=c;break}
+      }
+      if(hdrRow>=0)break;
+    }
+    if(hdrRow<0){hdrRow=0;colOff=2}
+    console.log('  pTasks: hdrRow='+hdrRow+' colOff='+colOff);
+    // Data starts after header. Columns from colOff: 구분,매체,내용,중요도,종료일,담당자,상태,진행현황,비고
+    for(var i=hdrRow+1;i<rows.length;i++){
+      var r=rows[i];if(!r)continue;
+      var no=s(r[0])||s(r[1])||''; // 순번 might be in A or B
+      var cat=s(r[colOff]);
+      if(!cat&&!s(r[colOff+1])&&!s(r[colOff+2]))continue;
+      items.push({
+        no:no,
+        category:cat,
+        media:s(r[colOff+1]),
+        content:s(r[colOff+2]),
+        priority:s(r[colOff+3]),
+        deadline:s(r[colOff+4]),
+        person:s(r[colOff+5]),
+        status:s(r[colOff+6]),
+        progress:s(r[colOff+7]),
+        note:s(r[colOff+8])
+      });
+    }
+    return items;
+  }
+
+  function pTeamCal(rows){
+    if(!rows)return[];var ev=[];
+    console.log('  pTeamCal: '+rows.length+' rows');
+    // Calendar layout: alternating date row + event row
+    // Dates can be in any column 0+, look for cells with date pattern
+    for(var i=0;i<rows.length-1;i++){
+      var dr=rows[i];if(!dr)continue;
+      // Check if this row has dates
+      var hasDate=false;
+      for(var c=0;c<dr.length;c++){
+        var v=s(dr[c]);
+        if(v&&/\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}|\d{4}\.\s*\d{1,2}\.\s*\d{1,2}/.test(v)){hasDate=true;break}
+      }
+      if(!hasDate)continue;
+      var er=rows[i+1];if(!er)continue;
+      // Pair dates with events
+      for(var c=0;c<dr.length;c++){
+        var dv=s(dr[c]),evv=s(er[c]);
+        if(dv&&evv&&/\d/.test(dv))ev.push({date:nD(dv),events:evv});
+      }
+      i++; // skip event row
+    }
+    console.log('  pTeamCal parsed: '+ev.length+' events');
+    return ev;
+  }
+
+  function pSchedUp(rows){
+    if(!rows)return[];var ev=[];
+    for(var i=1;i<rows.length;i++){var r=rows[i];if(!r)continue;
+      var mo=s(r[0]),day=s(r[1]),ct=s(r[2]);
+      if(mo&&day&&ct)ev.push({month:mo,day:day,content:ct,dayOfWeek:n(r[3])});
+    }return ev;
+  }
+
+  function pClipping(rows){
+    if(!rows)return[];var items=[];
+    for(var i=1;i<rows.length;i++){var r=rows[i];if(!r||!s(r[0]))continue;
+      items.push({date:s(r[0]),keyword:s(r[1]),media:s(r[2]),title:s(r[3]),link:s(r[4])});
+    }return items;
+  }
+
+  function pBudget(rows){
+    if(!rows)return[];var items=[];
+    for(var i=2;i<rows.length;i++){var r=rows[i];if(!r||!s(r[1]))continue;
+      var type=s(r[1]),name=s(r[2]);
+      items.push({type:type,name:name,a26:n(r[3]),a25:n(r[4]),s26:n(r[5]),rate:n(r[6]),s25:n(r[7]),
+        isSub:type.indexOf('계')>=0,isTotal:type==='합계',isSingle:['글로벌대행','글로벌PR','예비비'].indexOf(type)>=0});
+    }return items;
+  }
+
+  function pMonthly(rows){
+    if(!rows)return[];var items=[];
+    for(var i=2;i<rows.length;i++){var r=rows[i];if(!r||!s(r[0]))continue;
+      items.push({media:s(r[0]),sub:s(r[1]),received:s(r[2]),v1:s(r[3]),v2:s(r[4]),note:s(r[5]),cumulative26:s(r[6]),monthly25:s(r[7]),cumulative25:s(r[8]),annual25:s(r[9])});
+    }return items;
+  }
+
+  function pPR(rows){
+    if(!rows)return[];var items=[];
+    for(var i=1;i<rows.length;i++){var r=rows[i];if(!r||!s(r[1]))continue;
+      items.push({no:s(r[0]),month:s(r[1]),type:s(r[2]),date:s(r[3]),content:s(r[4]),media:s(r[5]),link:s(r[6])});
+    }return items;
+  }
+
+  function pComCal(rows){
+    if(!rows)return[];var items=[],lm='';
+    for(var i=1;i<rows.length;i++){var r=rows[i];if(!r)continue;
+      var mo=s(r[0])||lm,dt=s(r[1]),ev=s(r[2]);
+      if(s(r[0]))lm=s(r[0]);
+      if(dt&&ev)items.push({month:mo,date:dt,events:ev.split('\n').filter(Boolean)});
+    }return items;
+  }
+
+  // 외근현황 파서
+  // Apps Script가 {values: [[...]], backgrounds: [[...]]} 형식으로 반환하는 경우 지원
+  // 기존 2D 배열 형식도 호환
+  function pOuting(sheetData){
+    if(!sheetData)return null;
+
+    // Detect format: new (object with values/backgrounds) or legacy (2D array)
+    var rows, bgs=null;
+    if(Array.isArray(sheetData)){
+      rows=sheetData;
+    }else if(sheetData.values){
+      rows=sheetData.values;
+      bgs=sheetData.backgrounds||null;
+    }else{
+      return null;
+    }
+
+    if(!rows||rows.length<3)return null;
+    console.log('📊 외근현황 raw rows:',rows.length,'bgs:',bgs?'yes':'no');
+    for(var dd=0;dd<Math.min(5,rows.length);dd++){
+      var dr=rows[dd];if(!dr)continue;
+      var dump=[];
+      for(var dc=0;dc<Math.min(12,dr.length);dc++)if(s(dr[dc]))dump.push(dc+':'+s(dr[dc]).substring(0,20));
+      if(dump.length)console.log('  out r'+dd+': '+dump.join(' | '));
+    }
+
+    // Time parser: extract HH:MM from various formats
+    function parseTime(v){
+      if(!v)return'';
+      var str=String(v).trim();
+      if(!str||str==='-')return str;
+      // Sheets epoch ISO: 1899-12-30T23:32:08.000Z (UTC) → KST = UTC + 9
+      // Use Date object to parse and get LOCAL time (browser will apply timezone)
+      if(/^1899-/.test(str)){ // Sheets epoch: 부동소수점 오류로 8:32:08 같은 값 발생
+        var d=new Date(str);
+        if(!isNaN(d.getTime())){
+          var utcH=d.getUTCHours(),utcM=d.getUTCMinutes(),utcS=d.getUTCSeconds();
+          var totalMin=utcH*60+utcM+9*60;
+          // 부동소수점 오류(32분, 8초 등) → 정각으로 보정: 초가 있거나 분이 비정상이면 round
+          if(utcS>0||utcM>0){
+            // 30분 이상이면 올림, 아니면 내림 → 정각 처리
+            var roundedMin=Math.round(totalMin/60)*60;
+            totalMin=roundedMin;
+          }
+          var h=Math.floor(totalMin/60)%24,mi=totalMin%60;
+          return String(h).padStart(2,'0')+':'+String(mi).padStart(2,'0');
+        }
+      }
+      // Generic ISO with T
+      var m=str.match(/T(\d{2}):(\d{2})/);
+      if(m)return m[1]+':'+m[2];
+      m=str.match(/(\d{1,2}):(\d{2})/);
+      if(m)return String(+m[1]).padStart(2,'0')+':'+m[2];
+      m=str.match(/(오전|오후)\s*(\d{1,2}):?(\d{2})?/);
+      if(m){
+        var h=parseInt(m[2]),mi=m[3]||'00';
+        if(m[1]==='오후'&&h<12)h+=12;
+        if(m[1]==='오전'&&h===12)h=0;
+        return String(h).padStart(2,'0')+':'+mi;
+      }
+      return str;
+    }
+
+    function parseDate(v){
+      if(!v)return'';
+      var str=String(v).trim();
+      var m=str.match(/(\d{4})[-.\s]+(\d{1,2})[-.\s]+(\d{1,2})/);
+      if(m)return m[1]+'-'+m[2].padStart(2,'0')+'-'+m[3].padStart(2,'0');
+      return str;
+    }
+
+    // Check if hex color is "empty" (white/transparent/default)
+    function isEmptyColor(c){
+      if(!c)return true;
+      var h=String(c).toLowerCase();
+      return h===''||h==='#ffffff'||h==='#fff'||h==='white'||h==='#000000'||h==='none';
+    }
+
+    // Row 0: B=date, D/F/H/J=member names
+    var r0=rows[0]||[];
+    var date=parseDate(r0[1]);
+    var members=[];
+    [3,5,7,9].forEach(function(idx){var m=s(r0[idx]);if(m)members.push(m)});
+    if(members.length<4)members=['임영롱','이성웅','권이윤','이남정'];
+
+    // Row 2+: data rows
+    var slots=[];
+    for(var i=2;i<rows.length;i++){
+      var r=rows[i];if(!r)continue;
+      var br=bgs?bgs[i]:null;
+      var from=parseTime(r[1]),to=parseTime(r[2]);
+      if(!from&&!to)continue;
+      var slot={from:from,to:to};
+      // Person 0: D(3)/E(4), Person 1: F(5)/G(6), Person 2: H(7)/I(8), Person 3: J(9)/K(10)
+      [[0,3,4],[1,5,6],[2,7,8],[3,9,10]].forEach(function(p){
+        var pi=p[0],si=p[1],li=p[2];
+        slot['person'+pi+'_schedule']=s(r[si])||null;
+        slot['person'+pi+'_place']=s(r[li])||null;
+        // Extract background color for this person's schedule cell
+        if(br){
+          var sbg=br[si],lbg=br[li];
+          slot['person'+pi+'_bg']=isEmptyColor(sbg)?(isEmptyColor(lbg)?null:lbg):sbg;
+        }else{
+          slot['person'+pi+'_bg']=null;
+        }
+      });
+      slots.push(slot);
+    }
+    console.log('📊 외근현황 parsed:',slots.length,'slots, date:',date,'members:',members);
+    return {date:date,members:members,timeSlots:slots};
+  }
+
+  // ---- Main sync ----
+  async function syncAll(){
+    st.textContent='동기화중...';st.style.color='var(--yel)';
+    try{
+      console.log('🔄 Apps Script API 호출:',API);
+      var resp=await fetch(API);
+      if(!resp.ok)throw new Error('HTTP '+resp.status);
+      var data=await resp.json();
+      var sheetNames=Object.keys(data);
+      console.log('📊 수신된 시트 ('+sheetNames.length+'개):',sheetNames);
+
+      // Apply each sheet by name matching
+      var todayRaw=findSheetRaw(data,'TODAY');if(todayRaw)pToday(todayRaw.values,todayRaw.fontLines||null);
+      // 외근현황: try multiple keywords
+      var ot=findSheetRaw(data,'외근')||findSheetRaw(data,'외근현황')||findSheetRaw(data,'외');
+      if(ot){var o=pOuting(ot);if(o){D.outing=o;console.log('  외근 saved:',o.timeSlots.length,'slots')}}
+      else{console.warn('  ⚠️ 외근 시트 못 찾음')}
+      var tp=findSheet(data,'업무_진행');if(tp){D.tasks_progress=pTasks(tp);console.log('  업무_진행:',D.tasks_progress.length)}
+      var td=findSheet(data,'업무_완료');if(td){D.tasks_done=pTasks(td);console.log('  업무_완료:',D.tasks_done.length)}
+      var tc=findSheet(data,'일정_팀');if(tc){var ev=pTeamCal(tc);if(ev.length)D.team_cal=ev}
+      var su=findSheet(data,'일정_업로드');if(su){var ev=pSchedUp(su);if(ev.length)D.schedule_events=ev}
+      var cl=findSheet(data,'미디어클리핑');if(cl){var c=pClipping(cl);if(c.length)D.clipping=c}
+      var bg=findSheet(data,'예산현황');if(bg){var b=pBudget(bg);if(b.length)D.budget_rows=b}
+      var mo=findSheet(data,'당월');if(mo){var m=pMonthly(mo);if(m.length)D.monthly=m}
+      var pr=findSheet(data,'홍보현황');if(pr){var p=pPR(pr);if(p.length)D.pr_list=p}
+      var cc=findSheet(data,'전사일정');if(cc){var c=pComCal(cc);if(c.length)D.company_cal=c}
+
+      st.textContent='LIVE';st.style.color='var(--grn)';
+      st.title=sheetNames.length+' 시트 ('+new Date().toLocaleTimeString('ko')+')';
+
+      try{
+        sessionStorage.setItem('cosmax_live',JSON.stringify(D));
+        sessionStorage.setItem('cosmax_live_version',CACHE_VERSION);
+      }catch(e){}
+      location.reload();
+
+    }catch(e){
+      console.error('❌ Sync error:',e);
+      st.textContent='연결실패';st.style.color='var(--fire)';
+      st.title=e.message;
+    }
+  }
+
+  var rbtn=document.querySelector('.rbtn');
+  if(rbtn)rbtn.onclick=function(){sessionStorage.removeItem('cosmax_live');syncAll()};
+  // Check if cached data is incomplete (e.g. outing has no data) → force resync
+  var needsResync=false;
+  if(_cached){
+    var oc=_cached.outing;
+    if(!oc||!oc.timeSlots||oc.timeSlots.length===0)needsResync=true;
+    // Check if any slot actually has data
+    if(oc&&oc.timeSlots){
+      var hasAnyData=oc.timeSlots.some(function(s){
+        return s.person0_schedule||s.person1_schedule||s.person2_schedule||s.person3_schedule;
+      });
+      if(!hasAnyData)needsResync=true;
+    }
+  }
+  if(!_cached||needsResync){
+    if(needsResync)console.log('🔄 캐시 불완전 - 강제 재동기화');
+    setTimeout(syncAll,1500);
+  }
+  else{st.textContent='LIVE';st.style.color='var(--grn)';st.title='캐시 데이터'}
+  if(AUTO_MS>0)setInterval(function(){sessionStorage.removeItem('cosmax_live');syncAll()},AUTO_MS);
+})();
+</script>
+</body>
+</html>
